@@ -1,0 +1,9 @@
+.env
+reports/
+
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+
+.ruff_cache/
