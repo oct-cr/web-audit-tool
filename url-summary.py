@@ -5,9 +5,9 @@ import sys
 from rich.console import Console
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "src"))
-from modules.lighthouse.insights import get_summary, get_summary_columns
+from modules.lighthouse.insights import get_insights_summary, get_summary_columns
 from modules.lighthouse.categories import get_relevant_category_audits
-from modules.lighthouse.terminal import print_audit, print_summary_table
+from modules.lighthouse.terminal import print_audit, get_summary_table
 from services.workspaces import load_sites, find_site
 from services.reports import get_url_reports, read_report
 
@@ -56,11 +56,11 @@ def print_insights(data):
     columns = get_summary_columns()
     del columns["url"]
 
-    print_summary_table([get_summary(data)], columns=columns)
-
-    print()
 
     console = Console()
+    console.print(get_summary_table([get_insights_summary(data)], columns=columns))
+    console.print()
+
     for category in categories.values():
         relevant_audits = get_relevant_category_audits(audits, category)
 

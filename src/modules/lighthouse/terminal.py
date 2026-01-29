@@ -75,11 +75,9 @@ def print_audit(audit):
         print(f"{title}")
 
 
-def print_summary_table(rows, columns=None):
+def get_summary_table(rows, columns=None) -> Table:
     if columns is None:
         columns = get_summary_columns()
-
-    console = Console()
 
     table = Table(show_header=True, header_style="bold cyan")
     for key, col_label in columns.items():
@@ -98,4 +96,4 @@ def print_summary_table(rows, columns=None):
 
         table.add_row(*row)
 
-    console.print(table)
+    return table

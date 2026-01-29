@@ -23,7 +23,7 @@ columns = {
 }
 
 
-def get_summary(report):
+def get_insights_summary(report):
     lhr = report.get("lighthouseResult", {})
     audits = lhr.get("audits", {})
     categories = lhr.get("categories", {})

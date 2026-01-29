@@ -22,12 +22,18 @@ class DashkitApp(App):
     }
     """
 
+    def __init__(self, workspace, **kwargs) -> None:
+        self.workspace = workspace
+        self.sidebar_items = get_sidebar_items(self.workspace)
+
+        super().__init__(**kwargs)
+
     def compose(self) -> ComposeResult:
         yield Header(show_clock=False)
 
         with Horizontal(id="main"):
             yield Sidebar(items=self.sidebar_items, id="sidebar")
-            yield Body(id="body")
+            yield Body(id="body", sites=self.workspace)
 
         yield Footer()
 
@@ -37,12 +43,6 @@ class DashkitApp(App):
 
         self.menu.index = 0
         self._sync()
-
-    def __init__(self, workspace, **kwargs) -> None:
-        self.workspace = workspace
-        self.sidebar_items = get_sidebar_items(self.workspace)
-
-        super().__init__(**kwargs)
 
     def _sync(self) -> None:
         idx = self.menu.index or 0
