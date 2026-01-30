@@ -1,6 +1,6 @@
 from textual.app import App, ComposeResult
 from textual.containers import Horizontal
-from textual.widgets import Header, Footer, ListView
+from textual.widgets import Header, ListView
 
 from .body import Body
 from .sidebar import Sidebar
@@ -13,7 +13,7 @@ class DashkitApp(App):
     #main { height: 1fr; }
 
     #sidebar {
-        width: 30;
+        width: 24;
     }
 
     #body {
@@ -34,8 +34,6 @@ class DashkitApp(App):
         with Horizontal(id="main"):
             yield Sidebar(items=self.sidebar_items, id="sidebar")
             yield Body(id="body", sites=self.workspace)
-
-        yield Footer()
 
     def on_mount(self) -> None:
         self.menu = self.query_one("#sidebar", Sidebar)

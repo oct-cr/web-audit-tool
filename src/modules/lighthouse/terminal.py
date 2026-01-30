@@ -1,24 +1,9 @@
-from rich.console import Console
 from rich.table import Table
 from rich.text import Text
 
 from .audits import get_audit_display_value, get_score_status
 from .insights import get_summary_columns
 
-
-# ANSI color constants for terminal symbols
-RESET = "\033[0m"
-COLOR_GREEN = "\033[32m"
-COLOR_YELLOW = "\033[33m"
-COLOR_RED = "\033[31m"
-COLOR_GRAY = "\033[90m"
-
-colors = {
-    "0": COLOR_GRAY,
-    "1": COLOR_GREEN,
-    "2": COLOR_YELLOW,
-    "3": COLOR_RED,
-}
 
 icons = {
     "0": "•",
@@ -29,9 +14,7 @@ icons = {
 
 
 def get_text_with_status_color(text, status):
-    color = colors.get(str(status), COLOR_GRAY)
-
-    return f"{color}{text}{RESET}"
+    return Text(text, style=get_color_from_status(status))
 
 
 def get_status_icon(status):
@@ -59,20 +42,26 @@ def get_color_from_status(status):
     return "grey50"
 
 
-def print_audit(audit):
+def get_audit_text(audit):
     if not audit:
         return
 
     status = get_score_status(audit.get("score"))
+    icon = get_status_icon(status)
 
-    title = f"{get_status_icon(status)} {audit.get('title')}"
+    title_text = Text()
+    title_text.append(icon)
+    title_text.append(" ")
+    title_text.append(audit.get("title") or "")
 
     value = get_audit_display_value(audit)
 
     if value:
-        print(f"{title}: {value}")
-    else:
-        print(f"{title}")
+        val_text = Text(' ' + str(value), style=get_color_from_status(None))
+        title_text.append(val_text)
+        return title_text
+
+    return title_text
 
 
 def get_summary_table(rows, columns=None) -> Table:

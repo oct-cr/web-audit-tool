@@ -3,6 +3,8 @@ from textual.widgets import Static
 from services.workspaces import get_node_by_path
 from sections.sitesummary.dataprovider import get_site_summary
 from sections.sitesummary.view import get_site_summary_view
+from sections.urlsummary.dataprovider import get_url_summary
+from sections.urlsummary.view import get_url_summary_view
 
 
 class Body(Static):
@@ -23,6 +25,6 @@ class Body(Static):
             return
 
         if node.get("node_type") == "page":
-            url = node.get("url", "No URL")
-            self.update(f"[bold yellow]{url}[/bold yellow]\n\n\nq to quit")
+            url_summary = get_url_summary(node.get("url"))
+            self.update(get_url_summary_view(url_summary))
             return
