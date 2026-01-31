@@ -1,4 +1,4 @@
-.PHONY: docs lint fix
+.PHONY: docs check lint fix deadcode
 
 docs:
 	rm -rf docs/_build docs/api
@@ -9,8 +9,13 @@ docs:
 docs-open: docs
 	open docs/_build/html/index.html
 
+check: lint deadcode
+
 lint:
 	ruff check src
 
 fix:
 	ruff check --fix src
+
+deadcode:
+	vulture src/ --min-confidence 80

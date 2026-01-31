@@ -1,5 +1,5 @@
-from .http import fetch_lighthouse
 from ...services.reports import write_report
+from .http import fetch_lighthouse
 
 
 def run_lighthouse_report(

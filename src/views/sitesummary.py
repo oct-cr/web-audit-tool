@@ -1,6 +1,5 @@
 from ..modules.lighthouse.providers import get_insights_row
 from ..modules.lighthouse.views import get_summary_table
-
 from ..services.reports import get_url_reports, read_report
 from ..services.workspaces import get_site_urls
 

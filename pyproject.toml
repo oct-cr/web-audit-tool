@@ -19,6 +19,7 @@ dependencies = [
 dev = [
     "ruff>=0.14",
     "sphinx>=8.1",
+    "vulture>=2.14",
 ]
 
 [project.scripts]
@@ -32,4 +33,5 @@ src = ["src"]
 line-length = 100
 
 [tool.ruff.lint]
-select = ["E", "F", "UP"]
+select = ["E", "F", "UP", "I", "B", "SIM", "PIE", "RUF", "C4", "ARG", "ERA", "TCH", "PT"]
+ignore = ["ARG001"]

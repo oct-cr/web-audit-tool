@@ -1,8 +1,7 @@
 import json
-import re
 import os
+import re
 import urllib.parse
-
 
 report_folder = "reports"
 

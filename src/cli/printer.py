@@ -1,7 +1,7 @@
 from rich.console import Console
 
-from ..views.factory import get_view_by_route
 from ..services.workspaces import load_sites
+from ..views.factory import get_view_by_route
 
 
 def run_print(route: str) -> int:

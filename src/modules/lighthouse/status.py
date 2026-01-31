@@ -1,6 +1,5 @@
 from rich.text import Text
 
-
 icons = {
     "0": "•",
     "1": "✔",

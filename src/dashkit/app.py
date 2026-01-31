@@ -2,9 +2,9 @@ from textual.app import App, ComposeResult
 from textual.containers import Horizontal
 from textual.widgets import Header, ListView, Static
 
-from .sidebar import Sidebar
-from .parsers import get_sidebar_items
 from ..views.factory import get_view_by_route
+from .parsers import get_sidebar_items
+from .sidebar import Sidebar
 
 
 class DashkitApp(App):
@@ -61,7 +61,7 @@ class DashkitApp(App):
         except ValueError:
             self.body.update(f"[bold green]{route}[/bold green]\n\nq to quit")
 
-    def on_list_view_highlighted(self, event: ListView.Highlighted) -> None:
+    def on_list_view_highlighted(self, _event: ListView.Highlighted) -> None:
         self._sync()
 
     def on_key(self, event) -> None:

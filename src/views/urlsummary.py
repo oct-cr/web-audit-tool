@@ -4,7 +4,6 @@ from rich.text import Text
 
 from ..modules.lighthouse.providers import get_insights_row, get_relevant_audits
 from ..modules.lighthouse.views import get_audit_text, get_summary_table
-
 from ..services.reports import get_url_reports, read_report
 
 
