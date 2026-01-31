@@ -1,20 +1,3 @@
-def fmt_bytes(n):
-    if n is None:
-        return "n/a"
-    try:
-        n = float(n)
-    except Exception:
-        return str(n)
-    units = ["B", "KiB", "MiB", "GiB"]
-    i = 0
-    while n >= 1024 and i < len(units) - 1:
-        n /= 1024.0
-        i += 1
-    if units[i] == "B":
-        return f"{int(n)}{units[i]}"
-    return f"{n:.1f}{units[i]}"
-
-
 def get_audit_display_value(audit):
     raw_value = (
         audit.get("overallSavingsBytes")

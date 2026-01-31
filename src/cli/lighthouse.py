@@ -5,7 +5,7 @@ import sys
 
 from dotenv import load_dotenv
 
-from ..lighthouse import run_lighthouse_report
+from ..modules.lighthouse import run_lighthouse_report
 from ..services.workspaces import find_site, load_sites
 
 

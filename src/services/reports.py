@@ -1,8 +1,7 @@
 import json
 import re
 import os
-
-from ..helpers.filenames import get_filename_from_url
+import urllib.parse
 
 
 report_folder = "reports"
@@ -49,9 +48,7 @@ def get_url_reports(url):
 
             ts = m.group("ts")
 
-            key = (
-                os.path.join(rel_root, filebase) if rel_root != os.curdir else filebase
-            )
+            key = os.path.join(rel_root, filebase) if rel_root != os.curdir else filebase
 
             prev = latest.get(key)
 
@@ -61,3 +58,13 @@ def get_url_reports(url):
     results = [v[1] for v in latest.values()]
 
     return results
+
+
+def get_filename_from_url(url: str) -> str:
+    parsed = urllib.parse.urlparse(url)
+    base = (parsed.netloc or "") + (parsed.path or "")
+
+    base = re.sub(r"^https?://", "", base)
+    name = re.sub(r"[^A-Za-z0-9_-]+", "-", base).strip("-")
+
+    return name

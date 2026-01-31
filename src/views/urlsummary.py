@@ -2,9 +2,9 @@ from rich.console import group
 from rich.rule import Rule
 from rich.text import Text
 
-from ..modules.lighthouse.categories import get_relevant_audits
-from ..modules.lighthouse.insights import get_insights_summary
-from ..modules.lighthouse.terminal import get_audit_text, get_summary_table
+from ..modules.lighthouse.providers import get_insights_row, get_relevant_audits
+from ..modules.lighthouse.views import get_audit_text, get_summary_table
+
 from ..services.reports import get_url_reports, read_report
 
 
@@ -17,7 +17,7 @@ def get_url_summary(url: str) -> dict:
     report = read_report(report_urls[0])
 
     return {
-        "lighthouse_summary_rows": get_insights_summary(report),
+        "lighthouse_summary_rows": get_insights_row(report),
         "audits": get_relevant_audits(report),
     }
 

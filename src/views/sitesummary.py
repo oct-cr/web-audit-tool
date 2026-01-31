@@ -1,5 +1,6 @@
-from ..modules.lighthouse.insights import get_insights_summary
-from ..modules.lighthouse.terminal import get_summary_table
+from ..modules.lighthouse.providers import get_insights_row
+from ..modules.lighthouse.views import get_summary_table
+
 from ..services.reports import get_url_reports, read_report
 from ..services.workspaces import get_site_urls
 
@@ -13,7 +14,7 @@ def get_site_summary(site: dict) -> dict:
             continue
 
         report = read_report(report_urls[0])
-        rows.append(get_insights_summary(report))
+        rows.append(get_insights_row(report))
 
     return {"lighthouse_summary_rows": rows}
 
