@@ -1,6 +1,6 @@
-from modules.lighthouse.categories import get_relevant_audits
-from modules.lighthouse.insights import get_insights_summary
-from services.reports import get_url_reports, read_report
+from ...modules.lighthouse.categories import get_relevant_audits
+from ...modules.lighthouse.insights import get_insights_summary
+from ...services.reports import get_url_reports, read_report
 
 
 def get_url_summary(url):

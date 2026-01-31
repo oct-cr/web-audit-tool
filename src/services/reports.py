@@ -2,7 +2,7 @@ import json
 import re
 import os
 
-from helpers.filenames import get_filename_from_url
+from ..helpers.filenames import get_filename_from_url
 
 
 report_folder = "reports"
@@ -20,7 +20,7 @@ def write_report(url, key: str, report):
 
 def read_report(filename):
     path = os.path.join(report_folder, filename)
-    with open(path, "r", encoding="utf-8") as f:
+    with open(path, encoding="utf-8") as f:
         data = json.load(f)
 
     return data

@@ -1,8 +1,8 @@
 import argparse
 from datetime import datetime
 
-from modules.lighthouse.http import fetch_lighthouse
-from services.reports import write_report
+from .modules.lighthouse.http import fetch_lighthouse
+from .services.reports import write_report
 
 
 def run_lighthouse_report(url, api_key, strategy="Desktop", round_timestamp=False):

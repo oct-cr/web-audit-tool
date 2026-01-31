@@ -2,7 +2,7 @@ import yaml
 
 
 def load_sites(path):
-    with open(path, "r") as f:
+    with open(path) as f:
         return yaml.safe_load(f)
 
 

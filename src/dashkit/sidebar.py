@@ -1,11 +1,9 @@
-from typing import Iterable
-
 from rich.text import Text
 from textual.widgets import ListView, ListItem, Label
 
 
 class Sidebar(ListView):
-    def __init__(self, items: Iterable[dict], **kwargs) -> None:
+    def __init__(self, items, **kwargs) -> None:
         children = []
 
         for item in list(items):

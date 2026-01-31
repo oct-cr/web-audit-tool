@@ -1,6 +1,6 @@
-from modules.lighthouse.insights import get_insights_summary
-from services.reports import get_url_reports, read_report
-from services.workspaces import get_site_urls
+from ...modules.lighthouse.insights import get_insights_summary
+from ...services.reports import get_url_reports, read_report
+from ...services.workspaces import get_site_urls
 
 
 def get_site_summary(site):

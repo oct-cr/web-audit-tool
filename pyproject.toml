@@ -1,0 +1,35 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "webaudit"
+version = "0.1.0"
+description = "Lighthouse-based site performance dashboard"
+requires-python = ">=3.10"
+dependencies = [
+    "requests>=2.32",
+    "PyYAML>=6.0",
+    "python-dotenv>=1.2",
+    "rich>=14.3",
+    "textual>=7.4",
+]
+
+[project.optional-dependencies]
+dev = [
+    "ruff>=0.14",
+    "sphinx>=8.1",
+]
+
+[project.scripts]
+webaudit = "src.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src"]
+
+[tool.ruff]
+src = ["src"]
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "UP"]

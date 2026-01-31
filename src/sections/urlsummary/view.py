@@ -2,7 +2,7 @@ from rich.console import group
 from rich.rule import Rule
 from rich.text import Text
 
-from modules.lighthouse.terminal import get_summary_table, get_audit_text
+from ...modules.lighthouse.terminal import get_summary_table, get_audit_text
 
 
 @group()
