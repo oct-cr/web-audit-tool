@@ -1,6 +1,7 @@
+from datetime import datetime
+from dotenv import load_dotenv
 import os
 import sys
-from dotenv import load_dotenv
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "src"))
 from lighthouse import run_lighthouse_report
@@ -23,16 +24,14 @@ def main():
     api_key = os.environ.get("PAGESPEED_API_KEY")
     assert api_key, "PAGESPEED_API_KEY must be set"
 
-    exit_code = 0
+    round_timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+
     for page in pages_conf.values():
         url = page.get("url")
         if not url:
             continue
-        rc = run_lighthouse_report(url, api_key=api_key)
-        if rc != 0:
-            exit_code = rc
 
-    sys.exit(exit_code)
+        run_lighthouse_report(url, api_key=api_key, round_timestamp=round_timestamp)
 
 
 if __name__ == "__main__":

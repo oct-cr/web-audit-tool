@@ -1,17 +1,20 @@
 import argparse
+from datetime import datetime
 
 from modules.lighthouse.http import fetch_lighthouse
 from services.reports import write_report
 
 
-def run_lighthouse_report(url, api_key, strategy=None):
+def run_lighthouse_report(url, api_key, strategy="Desktop", round_timestamp=False):
     print(f"Running Lighthouse for {url}...")
     body = fetch_lighthouse(url, api_key=api_key, strategy=strategy)
 
     if body is None:
         raise RuntimeError("Lighthouse run failed.")
 
-    out_path = write_report(url, body)
+    key = strategy.lower() + "-" + round_timestamp
+
+    out_path = write_report(url, key, body)
 
     print(f"Report saved to: {out_path}")
 
@@ -36,7 +39,14 @@ def main():
     args = p.parse_args()
     api_key = args.key
 
-    run_lighthouse_report(args.url, api_key=api_key, strategy=args.strategy)
+    round_timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+
+    run_lighthouse_report(
+        args.url,
+        api_key=api_key,
+        strategy=args.strategy,
+        round_timestamp=round_timestamp,
+    )
 
 
 if __name__ == "__main__":

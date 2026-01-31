@@ -1,7 +1,6 @@
 import json
 import re
 import os
-from datetime import datetime
 
 from helpers.filenames import get_filename_from_url
 
@@ -9,10 +8,9 @@ from helpers.filenames import get_filename_from_url
 report_folder = "reports"
 
 
-def write_report(url, report):
+def write_report(url, key: str, report):
     name = get_filename_from_url(url)
-    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    out_path = os.path.join(report_folder, f"{name}-{timestamp}.json")
+    out_path = os.path.join(report_folder, f"{name}-{key}.json")
 
     with open(out_path, "wb") as f:
         f.write(report)
@@ -31,6 +29,9 @@ def read_report(filename):
 def get_url_reports(url):
     latest = {}
 
+    filebase = get_filename_from_url(url)
+    print(filebase)
+
     for root, _, files in os.walk(report_folder):
         rel_root = os.path.relpath(root, report_folder)
 
@@ -40,24 +41,20 @@ def get_url_reports(url):
 
             rel_path = os.path.join(rel_root, f) if rel_root != os.curdir else f
 
-            # filename pattern: <base>-YYYYMMDD_HHMMSS.json
-            m = re.match(r"^(?P<base>.+)-(?P<ts>\d{8}_\d{6})\.json$", f)
+            pattern = rf"^{re.escape(filebase)}-desktop-(?P<ts>\d{{8}}_\d{{6}})\.json$"
+            m = re.match(pattern, f)
 
             if not m:
                 continue
 
-            base = m.group("base")
-
-            if base != get_filename_from_url(url):
-                continue
-
             ts = m.group("ts")
 
-            # use base plus relative root to avoid collisions across folders
-            key = os.path.join(rel_root, base) if rel_root != os.curdir else base
+            key = (
+                os.path.join(rel_root, filebase) if rel_root != os.curdir else filebase
+            )
 
             prev = latest.get(key)
-            # choose file with lexicographically greatest timestamp (newer)
+
             if prev is None or (ts and (not prev[0] or ts > prev[0])):
                 latest[key] = (ts, rel_path)
 

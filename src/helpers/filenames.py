@@ -7,6 +7,6 @@ def get_filename_from_url(url: str) -> str:
     base = (parsed.netloc or "") + (parsed.path or "")
 
     base = re.sub(r"^https?://", "", base)
-    name = re.sub(r"[^A-Za-z0-9._-]+", "-", base).strip("-")
+    name = re.sub(r"[^A-Za-z0-9_-]+", "-", base).strip("-")
 
     return name
