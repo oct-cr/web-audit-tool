@@ -2,10 +2,8 @@ from collections.abc import Callable
 from typing import Any
 
 from ..services.workspaces import get_node_by_path
-from ..sections.sitesummary.dataprovider import get_site_summary
-from ..sections.sitesummary.view import get_site_summary_view
-from ..sections.urlsummary.dataprovider import get_url_summary
-from ..sections.urlsummary.view import get_url_summary_view
+from .sitesummary import get_site_summary, get_site_summary_view
+from .urlsummary import get_url_summary, get_url_summary_view
 
 
 def get_view_by_route(route: str, workspace: dict) -> tuple[Any, Callable]:
