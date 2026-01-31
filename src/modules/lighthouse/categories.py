@@ -1,4 +1,4 @@
-from .insights import get_score_status
+from .audits import get_score_status
 
 
 def get_relevant_category_audits(audits, category):
@@ -27,22 +27,3 @@ def get_relevant_category_audits(audits, category):
         )
 
     return sorted(relevant_audits, key=lambda audit: audit.get("weight", 1))
-
-
-def get_relevant_audits(report):
-    lr = report.get("lighthouseResult", {})
-    audits = lr.get("audits", {})
-    categories = lr.get("categories", {})
-
-    relevant_audits = []
-
-    for category in categories.values():
-        category_audits = get_relevant_category_audits(audits, category)
-        relevant_audits.append(
-            {
-                "label": category.get("title"),
-                "audits": category_audits,
-            }
-        )
-
-    return relevant_audits

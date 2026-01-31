@@ -2,7 +2,6 @@ import urllib.error
 import urllib.parse
 import urllib.request
 
-
 API_BASE = "https://www.googleapis.com/pagespeedonline/v5/runPagespeed"
 
 
@@ -32,10 +31,10 @@ def fetch_lighthouse(url, api_key=None, strategy=None):
         except Exception:
             msg = ""
 
-        raise Exception(f"HTTPError {e.code}: {e.reason}\n{msg}")
+        raise Exception(f"HTTPError {e.code}: {e.reason}\n{msg}") from e
 
     except Exception as e:
-        raise Exception(f"Error calling PageSpeed API: {e}")
+        raise Exception(f"Error calling PageSpeed API: {e}") from e
 
     body = resp.read()
     return body

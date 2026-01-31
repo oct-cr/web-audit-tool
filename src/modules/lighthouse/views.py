@@ -2,44 +2,8 @@ from rich.table import Table
 from rich.text import Text
 
 from .audits import get_audit_display_value, get_score_status
-from .insights import get_summary_columns
-
-
-icons = {
-    "0": "•",
-    "1": "✔",
-    "2": "⚠",
-    "3": "✖",
-}
-
-
-def get_text_with_status_color(text, status):
-    return Text(text, style=get_color_from_status(status))
-
-
-def get_status_icon(status):
-    return get_text_with_status_color(
-        icons.get(str(status), "•"),
-        status,
-    )
-
-
-def get_color_from_status(status):
-    if status is None:
-        return "grey50"
-    try:
-        s = int(status)
-    except Exception:
-        return "grey50"
-
-    if s == 1:
-        return "green"
-    if s == 2:
-        return "yellow"
-    if s == 3:
-        return "red"
-
-    return "grey50"
+from .config import get_summary_columns
+from .status import get_color_from_status, get_status_icon
 
 
 def get_audit_text(audit):
@@ -57,7 +21,7 @@ def get_audit_text(audit):
     value = get_audit_display_value(audit)
 
     if value:
-        val_text = Text(' ' + str(value), style=get_color_from_status(None))
+        val_text = Text(" " + str(value), style=get_color_from_status(None))
         title_text.append(val_text)
         return title_text
 

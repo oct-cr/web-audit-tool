@@ -1,29 +1,9 @@
 from .audits import get_audit_display_value, get_score_status
+from .categories import get_relevant_category_audits
+from .config import metrics
 
 
-categories = {
-    "performance": "Performance",
-    "accessibility": "Accessibility",
-    "best-practices": "Best Practices",
-    "seo": "SEO",
-}
-
-metrics = {
-    "first-contentful-paint": "FCP",
-    "largest-contentful-paint": "LCP",
-    "interactive": "TTI",
-    "total-blocking-time": "TBT",
-    "cumulative-layout-shift": "CLS",
-}
-
-columns = {
-    "url": "URL",
-    **categories,
-    **metrics,
-}
-
-
-def get_insights_summary(report):
+def get_insights_row(report):
     lhr = report.get("lighthouseResult", {})
     audits = lhr.get("audits", {})
     categories = lhr.get("categories", {})
@@ -48,5 +28,20 @@ def get_insights_summary(report):
     return cells
 
 
-def get_summary_columns():
-    return {**columns}
+def get_relevant_audits(report):
+    lr = report.get("lighthouseResult", {})
+    audits = lr.get("audits", {})
+    categories = lr.get("categories", {})
+
+    relevant_audits = []
+
+    for category in categories.values():
+        category_audits = get_relevant_category_audits(audits, category)
+        relevant_audits.append(
+            {
+                "label": category.get("title"),
+                "audits": category_audits,
+            }
+        )
+
+    return relevant_audits
