@@ -28,7 +28,6 @@ def get_url_reports(url):
     latest = {}
 
     filebase = get_filename_from_url(url)
-    print(filebase)
 
     for root, _, files in os.walk(report_folder):
         rel_root = os.path.relpath(root, report_folder)

@@ -1,4 +1,4 @@
-.PHONY: docs mypy
+.PHONY: docs
 
 docs:
 	rm -rf docs/_build docs/api
@@ -9,7 +9,7 @@ docs:
 docs-open: docs
 	open docs/_build/html/index.html
 
-check: lint deadcode mypy
+check: lint test deadcode mypy
 
 lint:
 	ruff check src
@@ -24,4 +24,7 @@ docs-deps:
 	pydeps src -o docs/dependency-graph.svg --noshow --cluster --max-bacon 2 --reverse --rankdir=RL
 
 mypy:
-	.venv/bin/python -m mypy src --config-file mypy.ini
+	mypy src --config-file mypy.ini
+
+test:
+	pytest src -q
