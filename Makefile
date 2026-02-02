@@ -1,4 +1,4 @@
-.PHONY: docs
+.PHONY: docs mypy
 
 docs:
 	rm -rf docs/_build docs/api
@@ -9,7 +9,7 @@ docs:
 docs-open: docs
 	open docs/_build/html/index.html
 
-check: lint deadcode
+check: lint deadcode mypy
 
 lint:
 	ruff check src
@@ -18,7 +18,10 @@ fix:
 	ruff check --fix src
 
 deadcode:
-	vulture src/ --min-confidence 80
+	vulture src/ --min-confidence 60 --ignore-names "TITLE,CSS,compose,on_mount,on_list_view_highlighted,on_key"
 
 docs-deps:
 	pydeps src -o docs/dependency-graph.svg --noshow --cluster --max-bacon 2 --reverse --rankdir=RL
+
+mypy:
+	.venv/bin/python -m mypy src --config-file mypy.ini
