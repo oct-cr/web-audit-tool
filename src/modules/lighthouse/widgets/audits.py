@@ -2,9 +2,9 @@ from rich.console import group
 from rich.rule import Rule
 from rich.text import Text
 
+from ....framework.status import get_color_from_status, get_status_icon
 from ..audits import get_audit_display_value, get_score_status
 from ..categories import get_relevant_category_audits
-from ..status import get_color_from_status, get_status_icon
 
 
 def get_audits_widget(report):

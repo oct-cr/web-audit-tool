@@ -7,7 +7,7 @@ def run_lighthouse_report(
     api_key: str,
     strategy: str = "Desktop",
     round_timestamp: str = "",
-) -> str:
+):
     print(f"Running Lighthouse for {url}...")
     body = fetch_lighthouse(url, api_key=api_key, strategy=strategy)
 

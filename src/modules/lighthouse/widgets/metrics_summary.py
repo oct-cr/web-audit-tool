@@ -2,9 +2,9 @@ from rich.console import group
 from rich.table import Table
 from rich.text import Text
 
+from ....framework.status import get_color_from_status
 from ..audits import get_audit_display_value, get_score_status
 from ..config import get_summary_columns, metrics
-from ..status import get_color_from_status
 
 
 def get_metrics_summary_widget(reports: list):
