@@ -1,8 +1,7 @@
+from dashkit.framework.presenters.occurrences_tables import get_occurrence_table
+from dashkit.framework.utils import get_occurrences
 from rich.console import Group
 from rich.rule import Rule
-
-from framework.presenters.occurrences_tables import get_occurrence_table
-from framework.utils import get_occurrences
 
 from ..modules.lighthouse.widgets import get_metrics_summary_widget, get_third_party_widget
 from ..services.reports import get_url_reports, read_report

@@ -1,7 +1,7 @@
 from rich.console import group
 from rich.text import Text
 
-from framework.status import get_status_icon
+from dashkit.framework.status import get_status_icon
 
 
 @group()

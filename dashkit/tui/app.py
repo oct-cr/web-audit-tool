@@ -2,7 +2,7 @@ from textual.app import App, ComposeResult
 from textual.containers import Horizontal
 from textual.widgets import Header, ListView, Static
 
-from framework.views import get_rendered_view
+from dashkit.framework.views import get_rendered_view
 
 from ..views.factory import get_view_by_route
 from .parsers import get_sidebar_items

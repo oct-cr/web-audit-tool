@@ -26,13 +26,13 @@ dev = [
 ]
 
 [project.scripts]
-webaudit = "src.cli:main"
+webaudit = "dashkit.cli:main"
 
 [tool.hatch.build.targets.wheel]
-packages = ["src"]
+packages = ["dashkit"]
 
 [tool.ruff]
-src = ["src"]
+src = ["dashkit"]
 line-length = 100
 
 [tool.ruff.lint]
