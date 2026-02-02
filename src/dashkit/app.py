@@ -2,6 +2,8 @@ from textual.app import App, ComposeResult
 from textual.containers import Horizontal
 from textual.widgets import Header, ListView, Static
 
+from framework.views import get_rendered_view
+
 from ..views.factory import get_view_by_route
 from .parsers import get_sidebar_items
 from .sidebar import Sidebar
@@ -56,8 +58,8 @@ class DashkitApp(App):
         route = self.sidebar_items[idx].get("command", "")
 
         try:
-            data, view_fn = get_view_by_route(route, self.workspace)
-            self.body.update(view_fn(data))
+            view = get_view_by_route(route, self.workspace)
+            self.body.update(get_rendered_view(view))
         except ValueError:
             self.body.update(f"[bold green]{route}[/bold green]\n\nq to quit")
 
