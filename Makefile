@@ -21,4 +21,4 @@ deadcode:
 	vulture src/ --min-confidence 80
 
 docs-deps:
-	pydeps src --cluster --max-bacon 3 -o docs/_build/dependencies.svg --noshow
+	pydeps src -o docs/dependency-graph.svg --noshow --cluster --max-bacon 2 --reverse --rankdir=RL
