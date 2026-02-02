@@ -17,6 +17,7 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = [
+    "pydeps>=1.12",
     "ruff>=0.14",
     "sphinx>=8.1",
     "vulture>=2.14",

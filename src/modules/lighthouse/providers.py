@@ -8,14 +8,14 @@ def get_insights_row(report):
     audits = lhr.get("audits", {})
     categories = lhr.get("categories", {})
 
-    cells = {
+    row = {
         "url": lhr.get("requestedUrl"),
     }
 
     for key, category in categories.items():
         score = category.get("score", 0)
         status = get_score_status(score)
-        cells[key] = (f"{score * 100:.0f}", status)
+        row[key] = (f"{score * 100:.0f}", status)
 
     for key in metrics:
         audit = audits.get(key)
@@ -23,9 +23,9 @@ def get_insights_row(report):
             continue
 
         status = get_score_status(audit.get("score"))
-        cells[key] = (get_audit_display_value(audit), status)
+        row[key] = (get_audit_display_value(audit), status)
 
-    return cells
+    return row
 
 
 def get_relevant_audits(report):

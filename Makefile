@@ -1,4 +1,4 @@
-.PHONY: docs check lint fix deadcode
+.PHONY: docs
 
 docs:
 	rm -rf docs/_build docs/api
@@ -19,3 +19,6 @@ fix:
 
 deadcode:
 	vulture src/ --min-confidence 80
+
+docs-deps:
+	pydeps src --cluster --max-bacon 3 -o docs/_build/dependencies.svg --noshow
