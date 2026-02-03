@@ -1,10 +1,9 @@
-from rich.console import group
 from rich.table import Table
 from rich.text import Text
 
 from ....framework.status import get_color_from_status
 from ..audits import get_audit_display_value, get_score_status
-from ..config import get_summary_columns, metrics
+from ..config import categories, get_summary_columns, metrics
 
 
 def get_metrics_summary_widget(reports: list):
@@ -14,7 +13,7 @@ def get_metrics_summary_widget(reports: list):
         if row:
             rows.append(row)
 
-    return rows, lambda input: _get_metrics_summary_view(input)
+    return rows, _get_summary_table
 
 
 def _get_insights_row(report: dict) -> dict:
@@ -48,10 +47,10 @@ def _get_summary_table(rows: list, columns=None) -> Table:
 
     table = Table(show_header=True, header_style="bold cyan")
     for key, col_label in columns.items():
-        if key == "url":
-            table.add_column(col_label, overflow="fold", justify="left")
-        else:
+        if (key in metrics) or (key in categories):
             table.add_column(col_label, overflow="fold", justify="right")
+        else:
+            table.add_column(col_label, overflow="fold", justify="left")
 
     for s in rows:
         row = []
@@ -66,11 +65,3 @@ def _get_summary_table(rows: list, columns=None) -> Table:
         table.add_row(*row)
 
     return table
-
-
-@group()
-def _get_metrics_summary_view(rows: list):
-    if not rows:
-        return
-
-    yield _get_summary_table(rows)

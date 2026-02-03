@@ -16,15 +16,23 @@ def find_site(sites, key):
     return None
 
 
-def get_site_urls(site):
-    urls = []
-    if site:
-        pages = site.get("pages", {})
-        for page in pages.values():
-            url = page.get("url")
-            if url:
-                urls.append(url)
-    return urls
+def get_site_pages(site) -> list:
+    if not site:
+        raise ValueError("Site not found")
+
+    pages_list: list[dict] = []
+    
+    pages = site.get("pages", {})
+    for page_key, page in pages.items():
+        pages_list.append(
+            {
+                **page,
+                "key": page_key,
+                "label": page.get("label", str(page_key).capitalize()),
+            }
+        )
+        
+    return pages_list
 
 
 def get_node_by_path(sites, path):

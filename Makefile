@@ -28,3 +28,5 @@ mypy:
 
 test:
 	pytest dashkit -q
+
+precommit: check docs-deps
