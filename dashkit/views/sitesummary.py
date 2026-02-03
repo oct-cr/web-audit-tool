@@ -3,6 +3,7 @@ from dashkit.framework.utils import get_occurrences
 from dashkit.modules.lighthouse.config import get_summary_columns
 from rich.console import Group
 from rich.rule import Rule
+from rich.text import Text
 
 from ..modules.lighthouse.widgets import get_metrics_summary_widget, get_third_party_widget
 from ..services.reports import get_url_reports, read_report
@@ -34,6 +35,7 @@ def get_site_summary(site: dict) -> list:
         return []
 
     script_occurrences = get_occurrences(scripts)
+
     metrics_data, get_summary_table = get_metrics_summary_widget(reports)
 
     metrics_data_labeled = []
@@ -41,10 +43,34 @@ def get_site_summary(site: dict) -> list:
         label = page_labels[i] if i < len(page_labels) else f"Page {i + 1}"
         metrics_data_labeled.append({"label": label, **data})
 
-    return [
+    view = [
         (metrics_data_labeled, _get_metrics_table_with_labels(get_summary_table)),
-        (script_occurrences, _get_renderer_with_title("Third Party Scripts", get_occurrence_table)),
     ]
+
+    if len(script_occurrences["discrepancies"]) > 0:
+        view.append(
+            (
+                script_occurrences["discrepancies"],
+                _get_renderer_with_title(
+                    f"Third Party Scripts - Discrepancies ["
+                    f"{len(script_occurrences['discrepancies'])}]",
+                    get_occurrence_table,
+                ),
+            )
+        )
+
+    if len(script_occurrences["common"]) > 0:
+        view.append(
+            (
+                script_occurrences["common"],
+                _get_renderer_with_title(
+                    f"Third Party Scripts - Common [{len(script_occurrences['common'])}]",
+                    _get_inline_list,
+                ),
+            )
+        )
+
+    return view
 
 
 def _get_metrics_table_with_labels(wrapped_renderer):
@@ -63,3 +89,7 @@ def _get_renderer_with_title(title, wrapped_renderer):
         ),
         wrapped_renderer(input),
     )
+
+
+def _get_inline_list(labels):
+    return Text.from_markup(" [dim]|[/dim] ".join(labels))
