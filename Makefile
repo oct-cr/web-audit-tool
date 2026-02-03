@@ -1,13 +1,13 @@
 .PHONY: docs
 
 docs:
-	rm -rf docs/_build docs/api
-	sphinx-apidoc -f -o docs/api dashkit
-	sphinx-build -b html docs docs/_build/html
-	@echo "Docs built at: docs/_build/html"
+	rm -rf _build/docs
+	sphinx-apidoc -f -o utils/docs/api dashkit
+	sphinx-build -b html utils/docs _build/docs/html
+	@echo "Docs built at: _build/docs/html"
 
 docs-open: docs
-	open docs/_build/html/index.html
+	open _build/docs/html/index.html
 
 check: lint test deadcode mypy
 

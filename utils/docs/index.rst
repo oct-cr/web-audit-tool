@@ -4,7 +4,7 @@ Web Audit Tool
 .. toctree::
    :maxdepth: 10
 
-   api/dashkit
+   api/modules
 
 Indices
 -------
