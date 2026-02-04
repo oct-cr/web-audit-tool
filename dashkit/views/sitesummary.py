@@ -77,7 +77,7 @@ def _get_renderer_with_title(payload, wrapped_renderer, title):
 
     return payload, lambda input: Group(
         Rule(
-            f"[yellow]{title}[/yellow]",
+            f"[dark_orange]{title}[/dark_orange]",
             align="left",
             style="dim",
         ),

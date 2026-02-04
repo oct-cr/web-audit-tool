@@ -17,11 +17,11 @@ def get_color_from_status(status: int | None) -> str:
         return "grey50"
 
     if s == 1:
-        return "green"
+        return "dark_green"
     if s == 2:
-        return "yellow"
+        return "dark_goldenrod"
     if s == 3:
-        return "red"
+        return "deep_pink3"
 
     return "grey50"
 

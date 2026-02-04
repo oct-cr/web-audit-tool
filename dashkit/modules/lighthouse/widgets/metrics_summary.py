@@ -45,7 +45,7 @@ def _get_summary_table(rows: list, columns=None) -> Table:
     if columns is None:
         columns = get_summary_columns()
 
-    table = Table(show_header=True, header_style="bold cyan")
+    table = Table(show_header=True, header_style="bold steel_blue3", box=None, padding=(0, 2))
     for key, col_label in columns.items():
         if (key in metrics) or (key in categories):
             table.add_column(col_label, overflow="fold", justify="right")
