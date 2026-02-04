@@ -18,10 +18,13 @@ fix:
 	ruff check --fix dashkit
 
 deadcode:
-	vulture dashkit/ --min-confidence 60 --ignore-names "TITLE,CSS,compose,on_mount,on_list_view_highlighted,on_key"
+	vulture dashkit/ --min-confidence 60 --ignore-names "TITLE,CSS,compose,on_mount,on_list_view_highlighted,on_key" --exclude '*/screenshot_*.py'
 
 docs-deps:
-	pydeps dashkit -o docs/dependency-graph.svg --noshow --cluster --max-bacon 2 --reverse --rankdir=RL --rmprefix dashkit.
+	pydeps dashkit -o docs/dependency-graph.svg --noshow --cluster --max-bacon 2 --reverse --rankdir=RL --rmprefix dashkit. -x 'dashkit.*.screenshot_*'
+
+docs-screenshots:
+	python utils/screenshot_runner.py
 
 mypy:
 	mypy dashkit --config-file mypy.ini
@@ -29,4 +32,4 @@ mypy:
 test:
 	pytest dashkit -q
 
-precommit: check docs-deps
+precommit: check docs-deps docs-screenshots
