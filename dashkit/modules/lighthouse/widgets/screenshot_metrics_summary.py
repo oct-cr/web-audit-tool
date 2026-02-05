@@ -83,6 +83,6 @@ metrics_sample = [
 
 def screenshot_metrics_summary(console: Console):
     table = presenter(metrics_sample, columns)
-    console.print("[bold cyan]Metrics Summary[/bold cyan]")
+    console.print("[bold cyan]Lighthouse Metrics Summary[/bold cyan]")
 
     console.print(table)

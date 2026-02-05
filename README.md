@@ -1,5 +1,7 @@
 # Web Audit Tool
 
+![Lighthouse Metrics](./docs/screenshot_metrics_summary.svg)
+
 ## Tool Goals
 - Collect website insights from different sources.
 - Surface the most meaningful insights.
@@ -15,15 +17,15 @@ Website audits are often manual, inconsistent, or hard to interpret. This tool a
 - Persists raw JSON reports
 - Surfaces summarized insights.
 
-## Widget Samples
+# Widget Samples
 
-# Metrics Summary
+## Metrics Summary
 
 Example: Lighthouse Metrics
 
 ![Lighthouse Metrics](./docs/screenshot_metrics_summary.svg)
 
-# Discrepancy Table
+## Discrepancy Table
 
 Shows missing elements across a group.
 
@@ -32,5 +34,6 @@ Example: 3rd-party running scripts across Pages.
 ![Discrepancy Table](./docs/screenshot_get_occurrence_table.svg)
 
 ---
+## Comming Features
 
-This is a work in progress. While it already works, I'm not shipping installation instructions yet.
+[Product Value Open Features](https://github.com/oct-cr/web-audit-tool/issues?q=is%3Aissue%20state%3Aopen%20label%3A%22product%20value%22)

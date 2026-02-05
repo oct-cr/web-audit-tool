@@ -9,7 +9,7 @@ docs:
 docs-open: docs
 	open _build/docs/html/index.html
 
-check: lint test deadcode mypy
+check: lint test deadcode mypy docs-screenshots
 
 lint:
 	ruff check dashkit
