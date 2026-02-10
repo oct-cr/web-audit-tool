@@ -4,16 +4,14 @@ def get_sidebar_items(sites):
     if not sites:
         return items
 
-    for s in sites:
-        sitename = s.get("name")
-        sitekey = s.get("key")
-
+    for sitekey, site in sites.items():
+        sitename = site.get("name")
         if not sitename or not sitekey:
             raise ValueError("Site is missing 'name' or 'key'.")
 
         items.append({"label": sitename, "command": f"{sitekey}"})
 
-        pages = s.get("pages", {})
+        pages = site.get("pages", {})
 
         for key, page in pages.items():
             url = page.get("url")

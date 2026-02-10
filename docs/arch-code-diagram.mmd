@@ -60,14 +60,13 @@ subgraph views["<b style='font-size:32px'>views</b>"]
   dashkit_views_urlsummary["dashkit.views.urlsummary"]
 end
 
+dashkit_cli --> dashkit_services_workspaces
 dashkit_cli --> dashkit_tui
 dashkit_cli___main__ --> dashkit_cli
 dashkit_cli_lighthouse --> dashkit_modules_lighthouse
 dashkit_cli_lighthouse --> dashkit_services_workspaces
 dashkit_cli_printer --> dashkit_framework_views
-dashkit_cli_printer --> dashkit_services_workspaces
 dashkit_cli_printer --> dashkit_views_factory
-dashkit_cli_tui --> dashkit_services_workspaces
 dashkit_cli_tui --> dashkit_tui_app
 dashkit_framework_presenters_occurrence_tables --> dashkit_framework_status
 dashkit_framework_presenters_screenshot_occurrence_tables --> dashkit_framework_presenters_occurrence_tables

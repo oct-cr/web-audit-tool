@@ -1,27 +1,27 @@
+from typing import cast
+
 import yaml
 
 
-def load_sites(path):
+def load_workspace(path):
     with open(path) as f:
         return yaml.safe_load(f)
 
 
-def find_site(sites, key):
-    key_l = key.lower()
-    for s in sites:
-        if s.get("key") == key:
-            return s
-        if s.get("name", "").lower() == key_l:
-            return s
-    return None
+def find_site(workspace, key: str) -> dict:
+    site = workspace.get("sites", {}).get(key)
+    if not site:
+        raise ValueError(f"Site not found for key: {key}")
+
+    return cast("dict", site)
 
 
-def get_site_pages(site) -> list:
+def get_site_pages(site) -> list[dict]:
     if not site:
         raise ValueError("Site not found")
 
     pages_list: list[dict] = []
-    
+
     pages = site.get("pages", {})
     for page_key, page in pages.items():
         pages_list.append(
@@ -31,7 +31,7 @@ def get_site_pages(site) -> list:
                 "label": page.get("label", str(page_key).capitalize()),
             }
         )
-        
+
     return pages_list
 
 

@@ -26,7 +26,7 @@ class DashkitApp(App):
 
     def __init__(self, workspace, initial_route: str | None = None, **kwargs) -> None:
         self.workspace = workspace
-        self.sidebar_items = get_sidebar_items(self.workspace)
+        self.sidebar_items = get_sidebar_items(self.workspace.get("sites", {}))
         self.initial_route = initial_route
 
         super().__init__(**kwargs)

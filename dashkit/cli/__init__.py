@@ -1,14 +1,23 @@
 import argparse
+import os
 import sys
+
+from dotenv import load_dotenv
+
+from dashkit.services.workspaces import load_workspace
 
 from .lighthouse import run_lighthouse
 from .printer import run_print
 from .tui import run_tui
 
+load_dotenv()
+
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(prog="webaudit")
     subparsers = parser.add_subparsers(dest="command", required=True)
+    workspace_default = os.getenv("WORKSPACE_DEFAULT", "demo")
+    parser.add_argument("-w", default=workspace_default, help="Workspace name")
 
     tui_parser = subparsers.add_parser("tui", help="Launch interactive TUI")
     tui_parser.add_argument("route", nargs="?", default=None, help="Initial route")
@@ -18,14 +27,22 @@ def main(argv: list[str] | None = None) -> int:
 
     subparsers.add_parser("lighthouse", help="Run Lighthouse audit")
 
+    workspace_path = parser.parse_args(argv).w
+
+    try:
+        workspace = load_workspace(f'workspaces/{workspace_path}.yaml')
+    except Exception as e:
+        print(f"Error loading workspace: {e}", file=sys.stderr)
+        return 1
+
     args, remaining = parser.parse_known_args(argv)
 
     if args.command == "tui":
-        return run_tui(args.route)
+        return run_tui(workspace, args.route)
     if args.command == "print":
-        return run_print(args.route)
+        return run_print(workspace, args.route)
     if args.command == "lighthouse":
-        return run_lighthouse(remaining)
+        return run_lighthouse(workspace, remaining)
 
     return 1
 

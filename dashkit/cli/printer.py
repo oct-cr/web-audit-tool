@@ -1,12 +1,10 @@
 from rich.console import Console
 
 from ..framework.views import get_rendered_view
-from ..services.workspaces import load_sites
 from ..views.factory import get_view_by_route
 
 
-def run_print(route: str) -> int:
-    workspace = load_sites("sites.yaml")
+def run_print(workspace, route: str) -> int:
     console = Console()
 
     try:
