@@ -1,38 +1,42 @@
 import argparse
 import os
-import sys
 from datetime import datetime
 
 from dotenv import load_dotenv
 
 from ..modules.lighthouse import run_lighthouse_report
-from ..services.workspaces import find_site
+from ..services.workspaces import get_node_by_path, get_site_pages
 
 
-def run_lighthouse(workspace, argv) -> int:
+def run_lighthouse(workspace, route, argv) -> int:
     load_dotenv()
 
     parser = argparse.ArgumentParser(prog="webaudit lighthouse")
-    parser.add_argument("site_key", help="Site key or name from sites.yaml")
     parser.add_argument("--dry", action="store_true", help="Show URLs without running audits")
+    parser.add_argument(
+        "--strategy", action="store", help="Audit strategy (Desktop or Mobile)", default="Mobile"
+    )
 
     args = parser.parse_args(argv)
 
-    site = find_site(workspace, args.site_key)
+    is_dry_run = args.dry
 
-    if not site:
-        print(f"Site not found for key/name: {args.site_key}", file=sys.stderr)
-        return 2
-
-    pages_conf = site.get("pages", {})
     api_key = os.environ.get("PAGESPEED_API_KEY")
-    if not api_key:
-        print("PAGESPEED_API_KEY must be set", file=sys.stderr)
-        return 1
+    if not is_dry_run and not api_key:
+        raise RuntimeError("PAGESPEED_API_KEY must be set. Use --dry to run without API key.")
+
+    site = get_node_by_path(workspace, route)
+    if site.get("node_type") != "site":
+        raise ValueError(
+            "Lighthouse audits can only be run on site nodes. Please specify a site route."
+        )
+
+    pages = get_site_pages(site)
 
     round_timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    strategy = args.strategy.lower()
 
-    for page in pages_conf.values():
+    for page in pages:
         url = page.get("url")
         if not url:
             continue
@@ -41,6 +45,13 @@ def run_lighthouse(workspace, argv) -> int:
             print(f"[DRY RUN] {url}")
             continue
 
-        run_lighthouse_report(url, api_key=api_key, round_timestamp=round_timestamp)
+        key_parts = ["lhr", site.get("key"), page.get("key"), strategy, round_timestamp]
+        key = "-".join(key_parts)
+
+        assert api_key is not None  # checked above. Type checker line
+
+        run_lighthouse_report(
+            url, api_key=api_key, workspace_key=workspace.get("key"), snapshot_key=key
+        )
 
     return 0

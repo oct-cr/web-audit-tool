@@ -8,8 +8,8 @@ def run_print(workspace, route: str) -> int:
     console = Console()
 
     try:
-        data = get_view_by_route(route, workspace)
-        console.print(get_rendered_view(data))
+        node = get_view_by_route(route, workspace)
+        console.print(get_rendered_view(node))
         return 0
     except ValueError as e:
         console.print(f"[red]Error:[/red] {e}")

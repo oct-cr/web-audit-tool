@@ -6,23 +6,27 @@ from rich.rule import Rule
 from rich.text import Text
 
 from ..modules.lighthouse.widgets import get_metrics_summary_widget, get_third_party_widget
-from ..services.reports import get_url_reports, read_report
+from ..services.snapshots import get_latest_lighthouse_report
 from ..services.workspaces import get_site_pages
 
 
-def get_site_summary(site: dict) -> list:
+def get_site_summary(workspace_key, site: dict) -> list:
     reports = []
     scripts = []
 
     page_labels = []
 
-    for page in get_site_pages(site):
-        report_urls = get_url_reports(page.get("url"))
+    site_key = site.get("key", "")
 
-        if not report_urls:
+    for page in get_site_pages(site):
+        page_key = page.get("key")
+        if not workspace_key or not page_key:
             continue
 
-        report = read_report(report_urls[0])
+        report = get_latest_lighthouse_report(workspace_key, site_key, page_key)
+        if not report:
+            continue
+
         reports.append(report)
 
         page_labels.append(page.get("label"))

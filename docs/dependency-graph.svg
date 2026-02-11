@@ -334,18 +334,18 @@
 <path fill="none" stroke="black" d="M763.13,-819.86C790.93,-817.42 822.34,-817.42 846.79,-818.03"/>
 <polygon fill="#b03a3a" stroke="black" points="846.57,-821.53 856.67,-818.33 846.78,-814.53 846.57,-821.53"/>
 </g>
-<!-- dashkit_services_reports -->
+<!-- dashkit_services_snapshots -->
 <g id="node23" class="node">
-<title>dashkit_services_reports</title><style>.edge>path:hover{stroke-width:8}</style>
-<ellipse fill="#c24747" stroke="black" cx="889.7" cy="-761.86" rx="39.42" ry="21.57"/>
+<title>dashkit_services_snapshots</title><style>.edge>path:hover{stroke-width:8}</style>
+<ellipse fill="#c24747" stroke="black" cx="889.7" cy="-761.86" rx="43.13" ry="21.57"/>
 <text xml:space="preserve" text-anchor="middle" x="889.7" y="-763.61" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#ffffff">services.</text>
-<text xml:space="preserve" text-anchor="middle" x="889.7" y="-752.36" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#ffffff">reports</text>
+<text xml:space="preserve" text-anchor="middle" x="889.7" y="-752.36" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#ffffff">snapshots</text>
 </g>
-<!-- dashkit_modules_lighthouse_runner&#45;&gt;dashkit_services_reports -->
+<!-- dashkit_modules_lighthouse_runner&#45;&gt;dashkit_services_snapshots -->
 <g id="edge30" class="edge">
-<title>dashkit_modules_lighthouse_runner&#45;&gt;dashkit_services_reports</title><style>.edge>path:hover{stroke-width:8}</style>
-<path fill="none" stroke="black" d="M763.13,-819.86C796.33,-816.14 830.53,-799.33 854.84,-784.76"/>
-<polygon fill="#b03a3a" stroke="black" points="856.67,-787.74 863.33,-779.5 852.99,-781.79 856.67,-787.74"/>
+<title>dashkit_modules_lighthouse_runner&#45;&gt;dashkit_services_snapshots</title><style>.edge>path:hover{stroke-width:8}</style>
+<path fill="none" stroke="black" d="M763.13,-819.86C795.91,-816.18 829.67,-799.75 853.91,-785.31"/>
+<polygon fill="#b03a3a" stroke="black" points="855.72,-788.31 862.4,-780.08 852.05,-782.35 855.72,-788.31"/>
 <path fill="none" stroke="black" d="M480.15,-778.67C499.15,-786.72 523.04,-795.71 545.28,-800.86 639.11,-822.57 665.43,-830.6 761.13,-819.86"/>
 </g>
 <!-- dashkit_modules_lighthouse_widgets_audits -->

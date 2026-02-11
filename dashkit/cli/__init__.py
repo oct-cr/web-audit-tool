@@ -17,7 +17,7 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(prog="webaudit")
     subparsers = parser.add_subparsers(dest="command", required=True)
     workspace_default = os.getenv("WORKSPACE_DEFAULT", "demo")
-    parser.add_argument("-w", default=workspace_default, help="Workspace name")
+    parser.add_argument("-w", default=workspace_default, help="Workspace key")
 
     tui_parser = subparsers.add_parser("tui", help="Launch interactive TUI")
     tui_parser.add_argument("route", nargs="?", default=None, help="Initial route")
@@ -25,12 +25,13 @@ def main(argv: list[str] | None = None) -> int:
     print_parser = subparsers.add_parser("print", help="Print view to terminal")
     print_parser.add_argument("route", help="Route to display")
 
-    subparsers.add_parser("lighthouse", help="Run Lighthouse audit")
+    lighthouse_parser = subparsers.add_parser("lighthouse", help="Run Lighthouse audit")
+    lighthouse_parser.add_argument("route", help="Route to audit")
 
-    workspace_path = parser.parse_args(argv).w
+    workspace_key = parser.parse_args(argv).w
 
     try:
-        workspace = load_workspace(f'workspaces/{workspace_path}.yaml')
+        workspace = load_workspace(workspace_key)
     except Exception as e:
         print(f"Error loading workspace: {e}", file=sys.stderr)
         return 1
@@ -42,7 +43,7 @@ def main(argv: list[str] | None = None) -> int:
     if args.command == "print":
         return run_print(workspace, args.route)
     if args.command == "lighthouse":
-        return run_lighthouse(workspace, remaining)
+        return run_lighthouse(workspace, args.route, remaining)
 
     return 1
 

@@ -4,25 +4,23 @@ from ..modules.lighthouse.config import get_summary_columns
 from ..modules.lighthouse.widgets import (
     get_audits_widget,
     get_metrics_summary_widget,
-    get_third_party_widget,
 )
-from ..services.reports import get_url_reports, read_report
+from ..services.snapshots import get_latest_lighthouse_report
 
 
-def get_url_summary(url: str) -> list:
-    report_urls = get_url_reports(url)
+def get_url_summary(workspace_key: str, page: dict) -> list:
+    page_key = page.get("key", "")
+    site_key = page.get("site_key", "")
 
-    if not report_urls:
+    report = get_latest_lighthouse_report(workspace_key, site_key, page_key)
+    if not report:
         return []
-
-    report = read_report(report_urls[0])
 
     metrics_data, get_summary_table = get_metrics_summary_widget([report])
 
     return [
-        (f"URL: {url}", Text),
+        (f"Snapshot: {page_key}", Text),
         (metrics_data, _get_metrics_table_with_labels(get_summary_table)),
-        get_third_party_widget(report),
         get_audits_widget(report),
     ]
 
