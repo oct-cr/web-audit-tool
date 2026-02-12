@@ -9,7 +9,7 @@ docs:
 docs-open: docs
 	open _build/docs/html/index.html
 
-check: lint test deadcode mypy docs-screenshots
+check: lint test deadcode mypy
 
 lint:
 	ruff check dashkit
@@ -21,7 +21,8 @@ deadcode:
 	vulture dashkit/ --min-confidence 60 --ignore-names "TITLE,CSS,compose,on_mount,on_list_view_highlighted,on_key" --exclude '*/screenshot_*.py'
 
 docs-deps:
-	pydeps dashkit -o docs/dependency-graph.svg --noshow --cluster --max-bacon 2 --reverse --rankdir=RL --rmprefix dashkit. -x 'dashkit.*.screenshot_*'
+	pydeps dashkit -o docs/dependency-graph.svg --noshow --cluster --max-bacon 2 --reverse --rankdir=RL --rmprefix dashkit. -x 'dashkit.*.screenshot_*'	
+	python utils/deps-chart.py
 
 docs-screenshots:
 	python utils/screenshot_runner.py

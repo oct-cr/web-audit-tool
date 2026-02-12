@@ -7,11 +7,11 @@ from ..audits import get_audit_display_value, get_score_status
 from ..categories import get_relevant_category_audits
 
 
-def get_audits_widget(report):
+def get_audits_widget(report: dict):
     audits = _get_relevant_audits(report)
-    
-    return audits, lambda input: _get_audits_view(input)
-    
+
+    return audits, _get_audits_view
+
 
 def _get_relevant_audits(report):
     lr = report.get("lighthouseResult", {})
@@ -51,7 +51,6 @@ def _get_audits_view(audits: list):
             yield _get_audit_text(audit)
 
 
-
 def _get_audit_text(audit):
     if not audit:
         return
@@ -72,4 +71,3 @@ def _get_audit_text(audit):
         return title_text
 
     return title_text
-
