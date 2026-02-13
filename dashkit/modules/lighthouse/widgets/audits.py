@@ -3,7 +3,7 @@ from rich.rule import Rule
 from rich.text import Text
 
 from ....framework.status import get_color_from_status, get_status_icon
-from ..audits import get_audit_display_value, get_score_status
+from ..audits import get_audit_display_value, get_audits_sorted_by_savings, get_score_status
 from ..categories import get_relevant_category_audits
 
 
@@ -22,6 +22,10 @@ def _get_relevant_audits(report):
 
     for category in categories.values():
         category_audits = get_relevant_category_audits(audits, category)
+        
+        if category.get("id") == 'performance':
+            category_audits = get_audits_sorted_by_savings(category_audits)
+        
         relevant_audits.append(
             {
                 "label": category.get("title"),
