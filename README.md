@@ -19,11 +19,13 @@ Website audits are often manual, inconsistent, or hard to interpret. This tool a
 
 # Widget Samples
 
-## Metrics Summary
+## Metric Summary
 
-Example: Lighthouse Metrics
+![Lighthouse Metrics](./docs/screenshot_metric_summary.svg)
 
-![Lighthouse Metrics](./docs/screenshot_metrics_summary.svg)
+## Audit Summary
+
+![Lighthouse Audit Summary](./docs/screenshot_audit_summary.svg)
 
 ## Discrepancy Table
 
