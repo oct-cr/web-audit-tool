@@ -22,10 +22,10 @@ def _get_relevant_audits(report):
 
     for category in categories.values():
         category_audits = get_relevant_category_audits(audits, category)
-        
-        if category.get("id") == 'performance':
+
+        if category.get("id") == "performance":
             category_audits = get_audits_sorted_by_savings(category_audits)
-        
+
         relevant_audits.append(
             {
                 "label": category.get("title"),
@@ -51,18 +51,40 @@ def _get_audits_view(audits: list):
             style="dim",
         )
 
+        last_metric_saving_count = None
+
         for audit in category_audits:
-            yield _get_audit_text(audit)
+            metric_savings = audit.get("metricSavings")
+
+            if isinstance(metric_savings, dict):
+                filtered_savings = [m for m, v in metric_savings.items() if v != 0]
+                metric_saving_count = len(filtered_savings)
+            else:
+                metric_saving_count = None
+
+            if (
+                last_metric_saving_count is not None
+                and last_metric_saving_count != 0
+                and metric_saving_count != last_metric_saving_count
+            ):
+                yield Text()
+
+            last_metric_saving_count = metric_saving_count
+
+            yield _get_audit_text(audit, 1 if (metric_saving_count == 1) else 0)
+
+            if metric_saving_count and (metric_saving_count > 1):
+                yield Text("  Affects: " + ", ".join(filtered_savings), style="dim")
 
 
-def _get_audit_text(audit):
+def _get_audit_text(audit, indent=0):
     if not audit:
         return
 
     status = get_score_status(audit.get("score"))
     icon = get_status_icon(status)
 
-    title_text = Text()
+    title_text = Text("  " * indent)
     title_text.append(icon)
     title_text.append(" ")
     title_text.append(audit.get("title") or "")

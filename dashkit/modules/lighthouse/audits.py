@@ -12,12 +12,12 @@ def is_audit_relevant(audit: dict) -> bool:
     return True
 
 
-def get_audits_sorted_by_savings(audits: list) -> list:
+def get_audits_sorted_by_savings(audits: list[dict]) -> list[dict]:
     if not audits:
         return []
 
     included = set()
-    sorted_audits: list = []
+    sorted_audits: list[dict] = []
 
     def append_once(audit: dict) -> None:
         audit_id = audit.get("id")
@@ -41,12 +41,13 @@ def get_audits_sorted_by_savings(audits: list) -> list:
 
     # 2) For each primary metric, add primary, then audits
     for a in audits:
-        if a.get("id") not in CONFIG_METRICS:
+        audit_id = a.get("id")
+        if not isinstance(audit_id, str) or audit_id not in CONFIG_METRICS:
             continue
 
         append_once(a)
 
-        acronym = CONFIG_METRICS[a.get("id")]
+        acronym = CONFIG_METRICS[audit_id]
 
         # then add audits that reference this metric with non-zero savings
         for a in audits:
