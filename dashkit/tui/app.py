@@ -42,20 +42,11 @@ class DashkitApp(App):
         self.menu = self.query_one("#sidebar", Sidebar)
         self.body = self.query_one("#body", Static)
 
-        self.menu.index = self._find_route_index(self.initial_route)
+        self.menu.select_route(self.initial_route)
         self._sync()
 
-    def _find_route_index(self, route: str | None) -> int:
-        if not route:
-            return 0
-        for idx, item in enumerate(self.sidebar_items):
-            if route in item.get("command", ""):
-                return idx
-        return 0
-
     def _sync(self) -> None:
-        idx = self.menu.index or 0
-        route = self.sidebar_items[idx].get("command", "")
+        route = self.menu.current_route
 
         try:
             view = get_view_by_route(route, self.workspace)
@@ -67,5 +58,14 @@ class DashkitApp(App):
         self._sync()
 
     def on_key(self, event) -> None:
-        if event.key == "q":
-            self.exit()
+        match event.key:
+            case "q":
+                self.exit()
+            case "w":
+                self.menu.jump_to_site(-1)
+            case "s":
+                self.menu.jump_to_site(1)
+            case "a":
+                self.menu.action_cursor_up()
+            case "d":
+                self.menu.action_cursor_down()
