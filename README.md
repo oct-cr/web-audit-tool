@@ -1,6 +1,6 @@
 # Web Audit Tool
 
-![Lighthouse Metrics](./docs/screenshot_metrics_summary.svg)
+![Lighthouse Metrics](./docs/screenshot_metric_summary.svg)
 
 ## Tool Goals
 - Collect website insights from different sources.

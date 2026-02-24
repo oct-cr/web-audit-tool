@@ -11,7 +11,7 @@ from ..services.workspaces import get_node_by_path, get_site_pages
 def run_lighthouse(workspace, route, argv) -> int:
     load_dotenv()
 
-    parser = argparse.ArgumentParser(prog="webaudit lighthouse")
+    parser = argparse.ArgumentParser(prog="dashkit lighthouse")
     parser.add_argument("--dry", action="store_true", help="Show URLs without running audits")
     parser.add_argument(
         "--strategy", action="store", help="Audit strategy (Desktop or Mobile)", default="Mobile"

@@ -14,8 +14,8 @@ load_dotenv()
 
 
 def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(prog="webaudit")
-    subparsers = parser.add_subparsers(dest="command", required=True)
+    parser = argparse.ArgumentParser(prog="dashkit")
+    subparsers = parser.add_subparsers(dest="command", required=False)
     workspace_default = os.getenv("WORKSPACE_DEFAULT", "demo")
     parser.add_argument("-w", default=workspace_default, help="Workspace key")
 
@@ -38,8 +38,8 @@ def main(argv: list[str] | None = None) -> int:
 
     args, remaining = parser.parse_known_args(argv)
 
-    if args.command == "tui":
-        return run_tui(workspace, args.route)
+    if args.command in (None, "tui"):
+        return run_tui(workspace, args.route if args.command == "tui" else None)
     if args.command == "print":
         return run_print(workspace, args.route)
     if args.command == "lighthouse":

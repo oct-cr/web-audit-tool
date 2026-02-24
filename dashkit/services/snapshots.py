@@ -6,8 +6,10 @@ from typing import cast
 workspaces_base = "workspaces"
 
 
-def write_snapshot(workspace_key, snapshot_key, body):
-    out_path = os.path.join(workspaces_base, workspace_key, f"{snapshot_key}.json")
+def write_snapshot(workspace_key: str, snapshot_key: str, body: bytes) -> str:
+    workspace_dir = os.path.join(workspaces_base, workspace_key)
+    os.makedirs(workspace_dir, exist_ok=True)
+    out_path = os.path.join(workspace_dir, f"{snapshot_key}.json")
 
     with open(out_path, "wb") as f:
         f.write(body)
