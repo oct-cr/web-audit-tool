@@ -26,9 +26,9 @@ def main(argv: list[str] | None = None) -> int:
     print_parser.add_argument("route", help="Route to display")
 
     lighthouse_parser = subparsers.add_parser("lighthouse", help="Run Lighthouse audit")
-    lighthouse_parser.add_argument("route", help="Route to audit")
+    lighthouse_parser.add_argument("route", nargs="?", default=None, help="Route to audit")
 
-    workspace_key = parser.parse_args(argv).w
+    workspace_key = parser.parse_known_args(argv)[0].w
 
     try:
         workspace = load_workspace(workspace_key)
