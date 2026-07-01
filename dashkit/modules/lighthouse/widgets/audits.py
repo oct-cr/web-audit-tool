@@ -77,6 +77,29 @@ def _get_audits_view(audits: list):
                 yield Text("  Affects: " + ", ".join(filtered_savings), style="dim")
 
 
+def get_audit_changes_widget(audit_diff: dict):
+    return audit_diff, _get_audit_changes_view
+
+
+@group()
+def _get_audit_changes_view(audit_diff: dict):
+    sections = [
+        ("↑ Fixed", audit_diff.get("fixed", [])),
+        ("↓ Regressed", audit_diff.get("regressed", [])),
+        ("— Still failing", audit_diff.get("still_failing", [])),
+    ]
+
+    for label, audits in sections:
+        if not audits:
+            continue
+
+        yield Text()
+        yield Rule(f"{label} {len(audits)}", align="left", style="dim")
+
+        for audit in audits:
+            yield _get_audit_text(audit)
+
+
 def _get_audit_text(audit, indent=0):
     if not audit:
         return

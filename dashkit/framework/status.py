@@ -26,6 +26,22 @@ def get_color_from_status(status: int | None) -> str:
     return "grey50"
 
 
+def get_delta_color(delta: float | None) -> str:
+    if delta is None:
+        return "grey50"
+    try:
+        d = float(delta)
+    except Exception:
+        return "grey50"
+
+    if d > 0:
+        return "dark_green"
+    if d < 0:
+        return "deep_pink3"
+
+    return "grey50"
+
+
 def get_text_with_status_color(text: str, status: int | None) -> Text:
     return Text(text, style=get_color_from_status(status))
 

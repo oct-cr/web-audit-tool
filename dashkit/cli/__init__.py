@@ -24,6 +24,12 @@ def main(argv: list[str] | None = None) -> int:
 
     print_parser = subparsers.add_parser("print", help="Print view to terminal")
     print_parser.add_argument("route", help="Route to display")
+    print_parser.add_argument(
+        "--vs",
+        dest="compare",
+        action="store_true",
+        help="Compare the two most recent snapshots of a page",
+    )
 
     lighthouse_parser = subparsers.add_parser("lighthouse", help="Run Lighthouse audit")
     lighthouse_parser.add_argument("route", nargs="?", default=None, help="Route to audit")
@@ -41,7 +47,7 @@ def main(argv: list[str] | None = None) -> int:
     if args.command in (None, "tui"):
         return run_tui(workspace, args.route if args.command == "tui" else None)
     if args.command == "print":
-        return run_print(workspace, args.route)
+        return run_print(workspace, args.route, compare=args.compare)
     if args.command == "lighthouse":
         return run_lighthouse(workspace, args.route, remaining)
 

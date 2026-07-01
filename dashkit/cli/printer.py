@@ -4,11 +4,11 @@ from ..framework.views import get_rendered_view
 from ..views.factory import get_view_by_route
 
 
-def run_print(workspace, route: str) -> int:
+def run_print(workspace, route: str, compare: bool = False) -> int:
     console = Console()
 
     try:
-        node = get_view_by_route(route, workspace)
+        node = get_view_by_route(route, workspace, compare=compare)
         console.print(get_rendered_view(node))
         return 0
     except ValueError as e:

@@ -20,6 +20,11 @@ class Sidebar(ListView):
         idx = self.index or 0
         return str(self.items[idx].get("command", ""))
 
+    @property
+    def current_type(self) -> str:
+        idx = self.index or 0
+        return str(self.items[idx].get("type", ""))
+
     def select_route(self, route: str | None) -> None:
         if not route:
             self.index = 0

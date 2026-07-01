@@ -1,7 +1,9 @@
+from typing import Literal
+
 from rich.table import Table
 from rich.text import Text
 
-from ....framework.status import get_color_from_status
+from ....framework.status import get_color_from_status, get_delta_color
 from ..audits import get_audit_display_value, get_score_status
 from ..config import categories, get_summary_columns, metrics
 
@@ -9,14 +11,14 @@ from ..config import categories, get_summary_columns, metrics
 def get_metrics_summary_widget(reports: list):
     rows = []
     for report in reports:
-        row = _get_insights_row(report)
+        row = get_insights_row(report)
         if row:
             rows.append(row)
 
     return rows, _get_summary_table
 
 
-def _get_insights_row(report: dict) -> dict:
+def get_insights_row(report: dict) -> dict:
     lhr = report.get("lighthouseResult", {})
     audits = lhr.get("audits", {})
     categories = lhr.get("categories", {})
@@ -101,6 +103,53 @@ def _get_row_average_scores(row: dict, columns: dict) -> float | None:
         return None
     
     return round(sum(category_scores) / len(category_scores), 2)
+
+
+def get_compare_metrics_widget(diff_row: dict):
+    """Render a single delta row: current value + dim delta per column."""
+    columns = get_summary_columns()
+    del columns["url"]
+    return diff_row, lambda row: _get_compare_table(row, columns)
+
+
+def _get_compare_table(diff_row: dict, columns: dict) -> Table:
+    table = Table(show_header=True, header_style="bold steel_blue3", box=None, padding=(0, 2))
+    for key, col_label in columns.items():
+        justify: Literal["left", "right"] = (
+            "right" if (key in metrics or key in categories) else "left"
+        )
+        table.add_column(col_label, overflow="fold", justify=justify)
+
+    row = []
+    for col_key in columns:
+        cell = diff_row.get(col_key)
+
+        if not isinstance(cell, tuple):
+            row.append(Text(""))
+            continue
+
+        display, score, delta_score = cell
+        status = get_score_status(score)
+        cell_text = Text(str(display), style=get_color_from_status(status))
+
+        # Show the delta only on category columns, where the 0-100 score is the
+        # displayed value and "+9" reads cleanly. The raw metric columns (LCP,
+        # TBT, ...) keep their value clean; their movement is already reflected
+        # in the Performance score delta.
+        if col_key in categories and delta_score:
+            points = round(delta_score * 100)
+            if points:
+                sign = "+" if points > 0 else ""
+                cell_text.append(
+                    f" {sign}{points}",
+                    style=get_delta_color(delta_score),
+                )
+
+        row.append(cell_text)
+
+    table.add_row(*row)
+
+    return table
 
 
 def _get_column_average_scores(rows: list, columns: dict) -> dict:

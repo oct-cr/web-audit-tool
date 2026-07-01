@@ -1,6 +1,8 @@
+from typing import ClassVar
+
 from textual.app import App, ComposeResult
 from textual.containers import Horizontal
-from textual.widgets import Header, ListView, Static
+from textual.widgets import Footer, Header, ListView, Static
 
 from dashkit.framework.views import get_rendered_view
 
@@ -24,10 +26,20 @@ class DashkitApp(App):
     }
     """
 
+    BINDINGS: ClassVar = [
+        ("c", "toggle_compare", "Compare"),
+        ("w", "prev_site", "Prev site"),
+        ("s", "next_site", "Next site"),
+        ("a", "cursor_up", "Up"),
+        ("d", "cursor_down", "Down"),
+        ("q", "quit", "Quit"),
+    ]
+
     def __init__(self, workspace, initial_route: str | None = None, **kwargs) -> None:
         self.workspace = workspace
         self.sidebar_items = get_sidebar_items(self.workspace.get("sites", {}))
         self.initial_route = initial_route
+        self.compare_mode = False
 
         super().__init__(**kwargs)
 
@@ -38,6 +50,8 @@ class DashkitApp(App):
             yield Sidebar(items=self.sidebar_items, id="sidebar")
             yield Static(id="body")
 
+        yield Footer()
+
     def on_mount(self) -> None:
         self.menu = self.query_one("#sidebar", Sidebar)
         self.body = self.query_one("#body", Static)
@@ -47,9 +61,10 @@ class DashkitApp(App):
 
     def _sync(self) -> None:
         route = self.menu.current_route
+        compare = self.compare_mode and self.menu.current_type == "page"
 
         try:
-            view = get_view_by_route(route, self.workspace)
+            view = get_view_by_route(route, self.workspace, compare=compare)
             self.body.update(get_rendered_view(view))
         except ValueError:
             self.body.update(f"[bold green]{route}[/bold green]\n\nq to quit")
@@ -57,15 +72,18 @@ class DashkitApp(App):
     def on_list_view_highlighted(self, _event: ListView.Highlighted) -> None:
         self._sync()
 
-    def on_key(self, event) -> None:
-        match event.key:
-            case "q":
-                self.exit()
-            case "w":
-                self.menu.jump_to_site(-1)
-            case "s":
-                self.menu.jump_to_site(1)
-            case "a":
-                self.menu.action_cursor_up()
-            case "d":
-                self.menu.action_cursor_down()
+    def action_toggle_compare(self) -> None:
+        self.compare_mode = not self.compare_mode
+        self._sync()
+
+    def action_prev_site(self) -> None:
+        self.menu.jump_to_site(-1)
+
+    def action_next_site(self) -> None:
+        self.menu.jump_to_site(1)
+
+    def action_cursor_up(self) -> None:
+        self.menu.action_cursor_up()
+
+    def action_cursor_down(self) -> None:
+        self.menu.action_cursor_down()
