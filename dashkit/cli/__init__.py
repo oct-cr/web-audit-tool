@@ -6,6 +6,7 @@ from dotenv import load_dotenv
 
 from dashkit.services.workspaces import load_workspace
 
+from .export import run_export
 from .lighthouse import run_lighthouse
 from .printer import run_print
 from .tui import run_tui
@@ -34,6 +35,11 @@ def main(argv: list[str] | None = None) -> int:
     lighthouse_parser = subparsers.add_parser("lighthouse", help="Run Lighthouse audit")
     lighthouse_parser.add_argument("route", nargs="?", default=None, help="Route to audit")
 
+    export_parser = subparsers.add_parser("export", help="Export agent-ready Markdown reports")
+    export_parser.add_argument(
+        "route", nargs="?", default=None, help="Route to export (site or site:page)"
+    )
+
     workspace_key = parser.parse_known_args(argv)[0].w
 
     try:
@@ -50,6 +56,8 @@ def main(argv: list[str] | None = None) -> int:
         return run_print(workspace, args.route, compare=args.compare)
     if args.command == "lighthouse":
         return run_lighthouse(workspace, args.route, remaining)
+    if args.command == "export":
+        return run_export(workspace, args.route, remaining)
 
     return 1
 

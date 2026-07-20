@@ -16,7 +16,9 @@ def run_lighthouse(workspace, route, argv) -> int:
     parser.add_argument(
         "--strategy", action="store", help="Audit strategy (Desktop or Mobile)", default="Mobile"
     )
-    parser.add_argument("--all", dest="all_sites", action="store_true", help="Audit all workspace URLs")
+    parser.add_argument(
+        "--all", dest="all_sites", action="store_true", help="Audit all workspace URLs"
+    )
 
     args = parser.parse_args(argv)
 
