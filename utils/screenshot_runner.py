@@ -24,31 +24,30 @@ def export_console_svg(console: Console, output_file: Path) -> Path:
     return output_file
 
 
-def run_module_screenshots(mod: ModuleType, width: int) -> list[Path]:
+def run_module_screenshots(mod: ModuleType, width: int, only: str = "") -> list[Path]:
     outputs: list[Path] = []
+    target_screenshot = only if only.startswith("screenshot_") else f"screenshot_{only}"
 
     for name in dir(mod):
         if not name.startswith("screenshot_"):
             continue
+
+        if only and name != target_screenshot:
+            continue
+
         attr = getattr(mod, name)
         if not callable(attr):
             continue
 
         console = Console(width=width, legacy_windows=False, force_terminal=True, record=True)
 
-        sig = inspect.signature(attr)
-        try:
-            attr() if len(sig.parameters) == 0 else attr(console)
-        except Exception:
-            raise
+        signature = inspect.signature(attr)
+        attr() if len(signature.parameters) == 0 else attr(console)
 
         output_path = Path.cwd() / "docs" / f"{name}.svg"
-
-        export_console_svg(console, output_path)
-        outputs.append(output_path)
+        outputs.append(export_console_svg(console, output_path))
 
     return outputs
-
 
 def discover_modules(module_name: str) -> list[ModuleType]:
     mods: list[ModuleType] = []
@@ -73,6 +72,13 @@ def main(argv: list[str] | None = None) -> None:
         default=["dashkit.framework.presenters", "dashkit.modules"],
         help="Module paths to scan for screenshot_ functions",
     )
+    parser.add_argument(
+        "--only",
+        "-o",
+        dest="only",
+        help="Run only this screenshot function (name without 'screenshot_')",
+        default="",
+    )
     parser.add_argument("--width", type=int, default=120)
     args = parser.parse_args(argv)
 
@@ -80,7 +86,7 @@ def main(argv: list[str] | None = None) -> None:
         mods = discover_modules(mname)
 
         for mod in mods:
-            run_module_screenshots(mod, args.width)
+            run_module_screenshots(mod, args.width, args.only)
 
 
 if __name__ == "__main__":

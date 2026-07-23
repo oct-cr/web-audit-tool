@@ -5,7 +5,9 @@ build-backend = "hatchling.build"
 [project]
 name = "dashkit"
 version = "0.1.0"
-description = "Lighthouse-based site performance dashboard"
+description = "Lighthouse auditing CLI and terminal dashboard"
+readme = "README.md"
+license = "MIT"
 requires-python = ">=3.10"
 dependencies = [
     "requests>=2.32",
@@ -27,6 +29,10 @@ dev = [
 
 [project.scripts]
 dashkit = "dashkit.cli:main"
+
+[project.urls]
+Issues = "https://github.com/oct-cr/web-audit-tool/issues"
+Repository = "https://github.com/oct-cr/web-audit-tool"
 
 [tool.hatch.build.targets.wheel]
 packages = ["dashkit"]

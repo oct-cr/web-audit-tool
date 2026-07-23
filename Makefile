@@ -18,10 +18,10 @@ fix:
 	ruff check --fix dashkit
 
 deadcode:
-	vulture dashkit/ --min-confidence 60 --ignore-names "TITLE,CSS,compose,on_mount,on_list_view_highlighted,on_key" --exclude '*/screenshot_*.py'
+	vulture dashkit/ --min-confidence 60 --ignore-names "TITLE,CSS,BINDINGS,compose,on_mount,on_list_view_highlighted,on_key,action_*" --exclude '*/screenshot_*.py'
 
 docs-deps:
-	pydeps dashkit -o docs/dependency-graph.svg --noshow --cluster --max-bacon 2 --reverse --rankdir=RL --rmprefix dashkit. -x 'dashkit.*.screenshot_*'	
+	pydeps dashkit -o docs/dependency-graph.svg --noshow --cluster --max-bacon 2 --reverse --rankdir=RL --rmprefix dashkit. -x 'dashkit.*.screenshot_*'
 	python utils/deps-chart.py
 
 docs-screenshots:
