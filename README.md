@@ -41,31 +41,44 @@ python -m pip install -e ".[dev]"
 
 ## Quickstart
 
-Dashkit reads URL batches from `workspaces/<key>.yaml`. Workspace configuration and
-generated reports are ignored by Git.
-
-Create `workspaces/demo.yaml`:
+Dashkit reads URL batches from `workspaces/<key>.yaml`. The repository includes
+`workspaces/demo.yaml` as the default workspace:
 
 ```yaml
 name: Demo
 sites:
-  python:
-    name: Python
+  sciencenews:
+    name: Science News
     pages:
-      home:
-        url: https://www.python.org/
-      downloads:
-        url: https://www.python.org/downloads/
+      frontpage:
+        url: https://www.sciencenews.org/
+      collection:
+        url: https://www.sciencenews.org/article-type/news
+      page:
+        url: https://www.sciencenews.org/article/3d-rare-snake-fossil-underground-home
+
+  itsfoss:
+    name: It's FOSS
+    pages:
+      frontpage:
+        url: https://itsfoss.com/
+      collection:
+        url: https://itsfoss.com/news/
+      page:
+        url: https://itsfoss.com/news/chatto-goes-open-source/
 ```
 
 Verify the configuration without credentials or network requests:
 
 ```bash
-dashkit -w demo lighthouse python --dry
+dashkit lighthouse sciencenews --dry
 ```
 
-The `python` route matches the site key and prints both configured URLs. To run the
-audits, add a PageSpeed Insights API key to an ignored `.env` file:
+The `sciencenews` route matches the site key and prints its three configured URLs.
+Custom workspace configurations and generated reports remain ignored by Git. Select
+a custom workspace with `-w <key>` or the `WORKSPACE_DEFAULT` environment variable.
+
+To run the audits, add a PageSpeed Insights API key to an ignored `.env` file:
 
 ```dotenv
 PAGESPEED_API_KEY=your-pagespeed-api-key
@@ -74,16 +87,16 @@ PAGESPEED_API_KEY=your-pagespeed-api-key
 Then collect reports and open the interactive viewer:
 
 ```bash
-dashkit -w demo lighthouse python
-dashkit -w demo tui
+dashkit lighthouse sciencenews
+dashkit tui
 ```
 
 Other useful commands:
 
 ```bash
-dashkit -w demo print python
-dashkit -w demo print python:home --vs
-dashkit -w demo export python:home --stdout
+dashkit print sciencenews
+dashkit print sciencenews:frontpage --vs
+dashkit export sciencenews:frontpage --stdout
 ```
 
 ## Widget samples

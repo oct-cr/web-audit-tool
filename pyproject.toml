@@ -37,6 +37,9 @@ Repository = "https://github.com/oct-cr/web-audit-tool"
 [tool.hatch.build.targets.wheel]
 packages = ["dashkit"]
 
+[tool.hatch.build.targets.wheel.force-include]
+"workspaces/demo.yaml" = "dashkit/workspaces/demo.yaml"
+
 [tool.ruff]
 src = ["dashkit"]
 line-length = 100

@@ -1,0 +1,21 @@
+name: Demo
+sites:
+  sciencenews:
+    name: Science News
+    pages:
+      frontpage:
+        url: https://www.sciencenews.org/
+      collection:
+        url: https://www.sciencenews.org/article-type/news
+      page:
+        url: https://www.sciencenews.org/article/3d-rare-snake-fossil-underground-home
+
+  itsfoss:
+    name: It's FOSS
+    pages:
+      frontpage:
+        url: https://itsfoss.com/
+      collection:
+        url: https://itsfoss.com/news/
+      page:
+        url: https://itsfoss.com/news/chatto-goes-open-source/

@@ -1,20 +1,32 @@
-import os
-from typing import cast
+from importlib.resources import files
+from importlib.resources.abc import Traversable
+from pathlib import Path
+from typing import Any, cast
 
 import yaml
 
 workspaces_base = "workspaces"
 
 
-def load_workspace(workspace_key: str):
-    workspace_path = os.path.join(workspaces_base, f"{workspace_key}.yaml")
+def _get_workspace_file(workspace_key: str) -> Path | Traversable:
+    workspace_path = Path(workspaces_base, f"{workspace_key}.yaml")
+    if workspace_path.is_file() or workspace_key != "demo":
+        return workspace_path
 
-    with open(workspace_path) as f:
-        workspace = yaml.safe_load(f)
+    bundled_workspace = files("dashkit").joinpath("workspaces").joinpath("demo.yaml")
+    if bundled_workspace.is_file():
+        return bundled_workspace
 
-        workspace["key"] = workspace_key
+    return Path(__file__).resolve().parents[2] / workspace_path
 
-        return workspace
+
+def load_workspace(workspace_key: str) -> dict[str, Any]:
+    workspace_file = _get_workspace_file(workspace_key)
+    with workspace_file.open(encoding="utf-8") as workspace_stream:
+        workspace = cast("dict[str, Any]", yaml.safe_load(workspace_stream))
+
+    workspace["key"] = workspace_key
+    return workspace
 
 
 def find_site(workspace, key: str) -> dict:
