@@ -1,6 +1,7 @@
 import argparse
 import os
 from datetime import datetime
+from typing import Any
 
 from dotenv import load_dotenv
 
@@ -8,7 +9,13 @@ from ..modules.lighthouse import run_lighthouse_report
 from ..services.workspaces import get_node_by_path, get_site_pages
 
 
-def run_lighthouse(workspace, route, argv) -> int:
+def _format_missing_site_error(error: ValueError, workspace: dict[str, Any]) -> str:
+    site_keys = workspace.get("sites", {}).keys()
+    available_sites = "\n".join(f"- {site_key}" for site_key in site_keys)
+    return f"Error: {error}\nAvailable sites:\n{available_sites}"
+
+
+def run_lighthouse(workspace: dict[str, Any], route: str | None, argv: list[str]) -> int:
     load_dotenv()
 
     parser = argparse.ArgumentParser(prog="dashkit lighthouse")
@@ -23,6 +30,8 @@ def run_lighthouse(workspace, route, argv) -> int:
     args = parser.parse_args(argv)
 
     is_dry_run = args.dry
+    workspace_key = workspace.get("key")
+    assert isinstance(workspace_key, str)
 
     api_key = os.environ.get("PAGESPEED_API_KEY")
     if not is_dry_run and not api_key:
@@ -37,7 +46,11 @@ def run_lighthouse(workspace, route, argv) -> int:
             for sk, sv in workspace.get("sites", {}).items()
         ]
     elif route:
-        site = get_node_by_path(workspace, route)
+        try:
+            site = get_node_by_path(workspace, route)
+        except ValueError as error:
+            print(_format_missing_site_error(error, workspace))
+            return 1
         if site.get("node_type") != "site":
             raise ValueError(
                 "Lighthouse audits can only be run on site nodes. Please specify a site route."
@@ -62,7 +75,7 @@ def run_lighthouse(workspace, route, argv) -> int:
             assert api_key is not None  # checked above. Type checker line
 
             run_lighthouse_report(
-                url, api_key=api_key, workspace_key=workspace.get("key"), snapshot_key=key
+                url, api_key=api_key, workspace_key=workspace_key, snapshot_key=key
             )
 
     return 0
