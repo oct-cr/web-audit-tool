@@ -1,12 +1,15 @@
 flowchart LR
-%% Auto-generated from code (utils/gen_arch_diagram.py)
+%% Auto-generated from code (utils/deps-chart.py)
 
 subgraph cli["<b style='font-size:32px'>cli</b>"]
   style cli fill:#1e3a5f,color:#fff,stroke:#000,stroke-width:2px
   dashkit_cli["dashkit.cli"]
   dashkit_cli___main__["dashkit.cli.__main__"]
+  dashkit_cli_export["dashkit.cli.export"]
   dashkit_cli_lighthouse["dashkit.cli.lighthouse"]
   dashkit_cli_printer["dashkit.cli.printer"]
+  dashkit_cli_test_export["dashkit.cli.test_export"]
+  dashkit_cli_test_lighthouse["dashkit.cli.test_lighthouse"]
   dashkit_cli_tui["dashkit.cli.tui"]
 end
 
@@ -28,14 +31,20 @@ subgraph modules["<b style='font-size:32px'>modules</b>"]
   dashkit_modules_lighthouse["dashkit.modules.lighthouse"]
   dashkit_modules_lighthouse_audits["dashkit.modules.lighthouse.audits"]
   dashkit_modules_lighthouse_categories["dashkit.modules.lighthouse.categories"]
+  dashkit_modules_lighthouse_compare["dashkit.modules.lighthouse.compare"]
   dashkit_modules_lighthouse_config["dashkit.modules.lighthouse.config"]
+  dashkit_modules_lighthouse_export["dashkit.modules.lighthouse.export"]
+  dashkit_modules_lighthouse_export_markdown["dashkit.modules.lighthouse.export_markdown"]
   dashkit_modules_lighthouse_http["dashkit.modules.lighthouse.http"]
   dashkit_modules_lighthouse_runner["dashkit.modules.lighthouse.runner"]
   dashkit_modules_lighthouse_test_audits["dashkit.modules.lighthouse.test_audits"]
+  dashkit_modules_lighthouse_test_compare["dashkit.modules.lighthouse.test_compare"]
+  dashkit_modules_lighthouse_test_export["dashkit.modules.lighthouse.test_export"]
   dashkit_modules_lighthouse_widgets["dashkit.modules.lighthouse.widgets"]
   dashkit_modules_lighthouse_widgets_audits["dashkit.modules.lighthouse.widgets.audits"]
   dashkit_modules_lighthouse_widgets_metrics_summary["dashkit.modules.lighthouse.widgets.metrics_summary"]
   dashkit_modules_lighthouse_widgets_screenshot_audit_summary["dashkit.modules.lighthouse.widgets.screenshot_audit_summary"]
+  dashkit_modules_lighthouse_widgets_screenshot_compare_summary["dashkit.modules.lighthouse.widgets.screenshot_compare_summary"]
   dashkit_modules_lighthouse_widgets_screenshot_metric_summary["dashkit.modules.lighthouse.widgets.screenshot_metric_summary"]
   dashkit_modules_lighthouse_widgets_test_metrics_summary["dashkit.modules.lighthouse.widgets.test_metrics_summary"]
   dashkit_modules_lighthouse_widgets_thirdparty["dashkit.modules.lighthouse.widgets.thirdparty"]
@@ -45,6 +54,7 @@ subgraph services["<b style='font-size:32px'>services</b>"]
   style services fill:#3d4a5a,color:#fff,stroke:#000,stroke-width:2px
   dashkit_services["dashkit.services"]
   dashkit_services_snapshots["dashkit.services.snapshots"]
+  dashkit_services_test_workspaces["dashkit.services.test_workspaces"]
   dashkit_services_workspaces["dashkit.services.workspaces"]
 end
 
@@ -60,28 +70,50 @@ subgraph views["<b style='font-size:32px'>views</b>"]
   style views fill:#4a2d5a,color:#fff,stroke:#000,stroke-width:2px
   dashkit_views_factory["dashkit.views.factory"]
   dashkit_views_sitesummary["dashkit.views.sitesummary"]
+  dashkit_views_urlcompare["dashkit.views.urlcompare"]
   dashkit_views_urlsummary["dashkit.views.urlsummary"]
 end
 
+dashkit_cli --> dashkit_cli_export
+dashkit_cli --> dashkit_cli_lighthouse
+dashkit_cli --> dashkit_cli_printer
+dashkit_cli --> dashkit_cli_tui
 dashkit_cli --> dashkit_services_workspaces
-dashkit_cli --> dashkit_tui
 dashkit_cli___main__ --> dashkit_cli
+dashkit_cli_export --> dashkit_modules_lighthouse_export
+dashkit_cli_export --> dashkit_modules_lighthouse_export_markdown
+dashkit_cli_export --> dashkit_services_snapshots
+dashkit_cli_export --> dashkit_services_workspaces
 dashkit_cli_lighthouse --> dashkit_modules_lighthouse
 dashkit_cli_lighthouse --> dashkit_services_workspaces
 dashkit_cli_printer --> dashkit_framework_views
 dashkit_cli_printer --> dashkit_views_factory
+dashkit_cli_test_export --> dashkit_cli_export
+dashkit_cli_test_lighthouse --> dashkit_cli_lighthouse
 dashkit_cli_tui --> dashkit_tui_app
 dashkit_framework_presenters_occurrence_tables --> dashkit_framework_status
 dashkit_framework_presenters_screenshot_occurrence_tables --> dashkit_framework_presenters_occurrence_tables
 dashkit_framework_test_utils --> dashkit_framework_utils
-dashkit_modules_lighthouse --> dashkit_modules
+dashkit_modules_lighthouse --> dashkit_modules_lighthouse_runner
+dashkit_modules_lighthouse --> dashkit_modules_lighthouse_widgets
 dashkit_modules_lighthouse_audits --> dashkit_modules_lighthouse_config
 dashkit_modules_lighthouse_categories --> dashkit_modules_lighthouse_audits
+dashkit_modules_lighthouse_compare --> dashkit_modules_lighthouse_audits
+dashkit_modules_lighthouse_compare --> dashkit_modules_lighthouse_config
+dashkit_modules_lighthouse_compare --> dashkit_modules_lighthouse_widgets_metrics_summary
+dashkit_modules_lighthouse_compare --> dashkit_modules_lighthouse_widgets_thirdparty
+dashkit_modules_lighthouse_export --> dashkit_modules_lighthouse_audits
+dashkit_modules_lighthouse_export --> dashkit_modules_lighthouse_widgets_metrics_summary
+dashkit_modules_lighthouse_export_markdown --> dashkit_modules_lighthouse_config
 dashkit_modules_lighthouse_runner --> dashkit_modules_lighthouse_http
 dashkit_modules_lighthouse_runner --> dashkit_services_snapshots
 dashkit_modules_lighthouse_test_audits --> dashkit_modules_lighthouse_audits
-dashkit_modules_lighthouse_widgets --> dashkit_modules_lighthouse
-dashkit_modules_lighthouse_widgets --> dashkit_modules_lighthouse_audits
+dashkit_modules_lighthouse_test_compare --> dashkit_modules_lighthouse_compare
+dashkit_modules_lighthouse_test_export --> dashkit_modules_lighthouse_export
+dashkit_modules_lighthouse_test_export --> dashkit_modules_lighthouse_export_markdown
+dashkit_modules_lighthouse_widgets --> dashkit_modules_lighthouse_widgets_audits
+dashkit_modules_lighthouse_widgets --> dashkit_modules_lighthouse_widgets_metrics_summary
+dashkit_modules_lighthouse_widgets --> dashkit_modules_lighthouse_widgets_thirdparty
 dashkit_modules_lighthouse_widgets_audits --> dashkit_framework_status
 dashkit_modules_lighthouse_widgets_audits --> dashkit_modules_lighthouse_audits
 dashkit_modules_lighthouse_widgets_audits --> dashkit_modules_lighthouse_categories
@@ -90,14 +122,19 @@ dashkit_modules_lighthouse_widgets_metrics_summary --> dashkit_modules_lighthous
 dashkit_modules_lighthouse_widgets_metrics_summary --> dashkit_modules_lighthouse_config
 dashkit_modules_lighthouse_widgets_screenshot_audit_summary --> dashkit_modules_lighthouse_audits
 dashkit_modules_lighthouse_widgets_screenshot_audit_summary --> dashkit_modules_lighthouse_widgets_audits
+dashkit_modules_lighthouse_widgets_screenshot_compare_summary --> dashkit_modules_lighthouse_compare
+dashkit_modules_lighthouse_widgets_screenshot_compare_summary --> dashkit_modules_lighthouse_widgets_audits
+dashkit_modules_lighthouse_widgets_screenshot_compare_summary --> dashkit_modules_lighthouse_widgets_metrics_summary
 dashkit_modules_lighthouse_widgets_screenshot_metric_summary --> dashkit_modules_lighthouse_widgets_metrics_summary
 dashkit_modules_lighthouse_widgets_test_metrics_summary --> dashkit_modules_lighthouse_widgets_metrics_summary
+dashkit_services_test_workspaces --> dashkit_services_workspaces
 dashkit_tui_app --> dashkit_framework_views
 dashkit_tui_app --> dashkit_tui_parsers
 dashkit_tui_app --> dashkit_tui_sidebar
 dashkit_tui_app --> dashkit_views_factory
 dashkit_views_factory --> dashkit_services_workspaces
 dashkit_views_factory --> dashkit_views_sitesummary
+dashkit_views_factory --> dashkit_views_urlcompare
 dashkit_views_factory --> dashkit_views_urlsummary
 dashkit_views_sitesummary --> dashkit_framework_presenters_occurrence_tables
 dashkit_views_sitesummary --> dashkit_framework_utils
@@ -105,9 +142,12 @@ dashkit_views_sitesummary --> dashkit_modules_lighthouse_config
 dashkit_views_sitesummary --> dashkit_modules_lighthouse_widgets
 dashkit_views_sitesummary --> dashkit_services_snapshots
 dashkit_views_sitesummary --> dashkit_services_workspaces
+dashkit_views_urlcompare --> dashkit_modules_lighthouse_compare
+dashkit_views_urlcompare --> dashkit_modules_lighthouse_widgets
+dashkit_views_urlcompare --> dashkit_services_snapshots
 dashkit_views_urlsummary --> dashkit_modules_lighthouse_config
 dashkit_views_urlsummary --> dashkit_modules_lighthouse_widgets
 dashkit_views_urlsummary --> dashkit_services_snapshots
 
 classDef nodeClass font-size:28px;
-class dashkit_framework_test_utils,dashkit_framework,dashkit_framework_utils,dashkit_framework_views,dashkit_framework_status,dashkit_tui_sidebar,dashkit_tui,dashkit_tui_parsers,dashkit_tui_app,dashkit_cli,dashkit_cli_tui,dashkit_cli_lighthouse,dashkit_cli_printer,dashkit_cli___main__,dashkit_modules,dashkit_views_sitesummary,dashkit_views_factory,dashkit_views_urlsummary,dashkit_services_snapshots,dashkit_services,dashkit_services_workspaces,dashkit_modules_lighthouse_audits,dashkit_modules_lighthouse_runner,dashkit_modules_lighthouse_config,dashkit_modules_lighthouse_categories,dashkit_modules_lighthouse,dashkit_modules_lighthouse_test_audits,dashkit_modules_lighthouse_http,dashkit_modules_lighthouse_widgets_audits,dashkit_modules_lighthouse_widgets_screenshot_audit_summary,dashkit_modules_lighthouse_widgets,dashkit_modules_lighthouse_widgets_metrics_summary,dashkit_modules_lighthouse_widgets_screenshot_metric_summary,dashkit_modules_lighthouse_widgets_test_metrics_summary,dashkit_modules_lighthouse_widgets_thirdparty,dashkit_framework_presenters_screenshot_occurrence_tables,dashkit_framework_presenters,dashkit_framework_presenters_occurrence_tables nodeClass;
+class dashkit_framework_test_utils,dashkit_framework,dashkit_framework_utils,dashkit_framework_views,dashkit_framework_status,dashkit_tui_sidebar,dashkit_tui,dashkit_tui_parsers,dashkit_tui_app,dashkit_cli_test_lighthouse,dashkit_cli,dashkit_cli_export,dashkit_cli_tui,dashkit_cli_lighthouse,dashkit_cli_printer,dashkit_cli___main__,dashkit_cli_test_export,dashkit_modules,dashkit_views_sitesummary,dashkit_views_factory,dashkit_views_urlsummary,dashkit_views_urlcompare,dashkit_services_snapshots,dashkit_services_test_workspaces,dashkit_services,dashkit_services_workspaces,dashkit_modules_lighthouse_audits,dashkit_modules_lighthouse_runner,dashkit_modules_lighthouse_config,dashkit_modules_lighthouse_categories,dashkit_modules_lighthouse,dashkit_modules_lighthouse_export,dashkit_modules_lighthouse_test_audits,dashkit_modules_lighthouse_http,dashkit_modules_lighthouse_export_markdown,dashkit_modules_lighthouse_test_compare,dashkit_modules_lighthouse_compare,dashkit_modules_lighthouse_test_export,dashkit_modules_lighthouse_widgets_audits,dashkit_modules_lighthouse_widgets_screenshot_audit_summary,dashkit_modules_lighthouse_widgets,dashkit_modules_lighthouse_widgets_metrics_summary,dashkit_modules_lighthouse_widgets_screenshot_compare_summary,dashkit_modules_lighthouse_widgets_screenshot_metric_summary,dashkit_modules_lighthouse_widgets_test_metrics_summary,dashkit_modules_lighthouse_widgets_thirdparty,dashkit_framework_presenters_screenshot_occurrence_tables,dashkit_framework_presenters,dashkit_framework_presenters_occurrence_tables nodeClass;

@@ -9,7 +9,7 @@ def run_lighthouse_report(
     workspace_key: str = "",
     snapshot_key: str = "",
 ):
-    print(f"Running Lighthouse for {url}...")
+    print(f"Running Lighthouse for: {url}")
     body = fetch_lighthouse(url, api_key=api_key, strategy=strategy)
 
     if body is None:

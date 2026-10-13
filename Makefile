@@ -31,6 +31,6 @@ mypy:
 	mypy dashkit --config-file mypy.ini
 
 test:
-	pytest dashkit -q
+	pytest dashkit utils -q
 
 precommit: check docs-deps docs-screenshots
