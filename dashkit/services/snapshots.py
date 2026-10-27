@@ -94,3 +94,19 @@ def get_recent_lighthouse_reports(
         (ts, cast("dict", read_report(workspace_key, rel_path)))
         for ts, rel_path in matches[:n]
     ]
+
+
+def get_lighthouse_reports(
+    workspace_key: str, site_key: str, page_key: str
+) -> list[tuple[str, dict]]:
+    regex_pattern = _lighthouse_report_pattern(site_key, page_key)
+    matches = sorted(
+        _walk_matching(workspace_key, regex_pattern),
+        key=lambda match: match[0] or "",
+        reverse=True,
+    )
+
+    return [
+        (timestamp, cast("dict", read_report(workspace_key, relative_path)))
+        for timestamp, relative_path in matches
+    ]

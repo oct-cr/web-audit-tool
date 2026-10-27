@@ -1,7 +1,11 @@
 from importlib.resources import files
-from importlib.resources.abc import Traversable
 from pathlib import Path
 from typing import Any, cast
+
+try:
+    from importlib.resources.abc import Traversable
+except ImportError:
+    from importlib.abc import Traversable
 
 import yaml
 

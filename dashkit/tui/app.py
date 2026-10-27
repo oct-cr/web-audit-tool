@@ -28,6 +28,8 @@ class DashkitApp(App):
 
     BINDINGS: ClassVar = [
         ("c", "toggle_compare", "Compare"),
+        ("h", "toggle_history", "History"),
+        ("escape", "close_history", "Back"),
         ("w", "prev_site", "Prev site"),
         ("s", "next_site", "Next site"),
         ("a", "cursor_up", "Up"),
@@ -40,6 +42,7 @@ class DashkitApp(App):
         self.sidebar_items = get_sidebar_items(self.workspace.get("sites", {}))
         self.initial_route = initial_route
         self.compare_mode = False
+        self.history_mode = False
 
         super().__init__(**kwargs)
 
@@ -61,10 +64,12 @@ class DashkitApp(App):
 
     def _sync(self) -> None:
         route = self.menu.current_route
-        compare = self.compare_mode and self.menu.current_type == "page"
+        is_page = self.menu.current_type == "page"
+        history = self.history_mode and is_page
+        compare = self.compare_mode and is_page and not history
 
         try:
-            view = get_view_by_route(route, self.workspace, compare=compare)
+            view = get_view_by_route(route, self.workspace, compare=compare, history=history)
             self.body.update(get_rendered_view(view))
         except ValueError:
             self.body.update(f"[bold green]{route}[/bold green]\n\nq to quit")
@@ -73,7 +78,21 @@ class DashkitApp(App):
         self._sync()
 
     def action_toggle_compare(self) -> None:
+        if self.menu.current_type != "page":
+            return
         self.compare_mode = not self.compare_mode
+        self._sync()
+
+    def action_toggle_history(self) -> None:
+        if self.menu.current_type != "page":
+            return
+        self.history_mode = not self.history_mode
+        self._sync()
+
+    def action_close_history(self) -> None:
+        if not self.history_mode:
+            return
+        self.history_mode = False
         self._sync()
 
     def action_prev_site(self) -> None:

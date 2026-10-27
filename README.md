@@ -13,6 +13,7 @@ teams spot performance problems and regressions.
 
 - Audit every page in a site or workspace through PageSpeed Insights.
 - Compare the two latest snapshots for a page.
+- Browse the full performance history for any page.
 - Summarize Lighthouse metrics, improvement opportunities, and third-party scripts.
 - Browse results in an interactive terminal interface.
 - Export concise Markdown reports for agents and other automation.
