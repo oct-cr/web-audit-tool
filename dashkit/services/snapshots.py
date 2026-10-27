@@ -45,20 +45,6 @@ def _walk_matching(workspace_key, regex_pattern):
             yield m.group("ts"), rel_path
 
 
-def get_url_reports(workspace_key, regex_pattern):
-    latest = {}
-
-    for ts, rel_path in _walk_matching(workspace_key, regex_pattern):
-        prev = latest.get(rel_path)
-
-        if prev is None or (ts and (not prev[0] or ts > prev[0])):
-            latest[rel_path] = (ts, rel_path)
-
-    results = [v[1] for v in latest.values()]
-
-    return results
-
-
 def _lighthouse_report_pattern(site_key: str, page_key: str) -> str:
     pattern_str = f"^lhr-{re.escape(site_key)}-{re.escape(page_key)}-mobile-"
     pattern_ts = r"(?P<ts>\d{8}_\d{6})\.json$"
@@ -70,12 +56,16 @@ def get_latest_lighthouse_report(
 ) -> dict:
     regex_pattern = _lighthouse_report_pattern(site_key, page_key)
 
-    report_urls = get_url_reports(workspace_key, regex_pattern)
+    matches = sorted(
+        _walk_matching(workspace_key, regex_pattern),
+        key=lambda m: m[0] or "",
+        reverse=True,
+    )
 
-    if not report_urls:
+    if not matches:
         return {}
 
-    return cast("dict", read_report(workspace_key, report_urls[0]))
+    return cast("dict", read_report(workspace_key, matches[0][1]))
 
 
 def get_recent_lighthouse_reports(
